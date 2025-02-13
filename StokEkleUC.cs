@@ -15,10 +15,30 @@ namespace Muhasebe_Programı
     {
         SQLController sqlController = new SQLController("D:\\PROJELER\\Muhasebe Programı\\muhasebe.db");
 
+        string urun_adi;
+        long urunId;
+
+        bool duzenlemeModu = false;
+
         public StokEkleUC()
         {
             InitializeComponent();
         }
+        public StokEkleUC(string urun_adi)
+        {
+            InitializeComponent();
+            this.urun_adi = urun_adi.Trim();
+
+            List<string> urun = sqlController.GetStok(urun_adi);
+
+            urunId = Convert.ToInt64(urun[0]);
+            textBoxUrunAdi.Text = urun[1];
+            textBoxAdet.Text = urun[2];
+            textBoxBirimFiyat.Text = urun[3];
+
+            duzenlemeModu = true;
+        }
+
         private void ChangeVisible(bool alim)
         {
             textBoxFaturaNo.Enabled = alim;
@@ -54,7 +74,14 @@ namespace Muhasebe_Programı
 
             string Err = null;
 
-            if (sqlController.GetStok(urunAdi) != null) Err = "Ürün mevcut";
+            if (duzenlemeModu)
+            {
+                if (sqlController.GetStok(urunAdi) != null && urunAdi != urun_adi) Err = "Ürün mevcut";
+            }
+            else
+            {
+                if (sqlController.GetStok(urunAdi) != null) Err = "Ürün mevcut";
+            }
             if (adet <= 0) Err = "Adedi doğru giriniz";
             if (fiyat <= 0) Err = "Fiyatı doğru giriniz";
             if (alim && string.IsNullOrEmpty(faturaNo)) Err = "Faturo no giriniz";
@@ -69,18 +96,41 @@ namespace Muhasebe_Programı
 
         private void btnStokKaydet_Click(object sender, EventArgs e)
         {
-            if (CheckValuesValid(textBoxUrunAdi, textBoxAdet, textBoxBirimFiyat, comboBoxStokTuru, textBoxFaturaNo))
+            if (!duzenlemeModu)
             {
-                string stokTuru = "sayim";
-                if (comboBoxStokTuru.Text == "Alım")
-                    stokTuru = "alim";
+                if (CheckValuesValid(textBoxUrunAdi, textBoxAdet, textBoxBirimFiyat, comboBoxStokTuru, textBoxFaturaNo))
+                {
+                    string stokTuru = "sayim";
+                    if (comboBoxStokTuru.Text == "Alım")
+                        stokTuru = "alim";
 
-                string err = sqlController.NewStok(textBoxUrunAdi.Text, Convert.ToInt32(textBoxAdet.Text), Convert.ToDouble(textBoxBirimFiyat.Text), textBoxFaturaNo.Text, stokTuru);
-                if (!string.IsNullOrEmpty(err))
-                    MessageBox.Show(err);
-                else
-                    MessageBox.Show("Ürün Başarıyla Eklendi");
+                    string err = sqlController.NewStok(textBoxUrunAdi.Text, Convert.ToInt32(textBoxAdet.Text), Convert.ToDouble(textBoxBirimFiyat.Text), textBoxFaturaNo.Text, stokTuru);
+                    if (!string.IsNullOrEmpty(err))
+                        MessageBox.Show(err);
+                    else
+                        MessageBox.Show("Ürün Başarıyla Eklendi");
+                }
             }
+            else
+            {
+                if (CheckValuesValid(textBoxUrunAdi, textBoxAdet, textBoxBirimFiyat, comboBoxStokTuru, textBoxFaturaNo))
+                {
+                    string stokTuru = "sayim";
+                    if (comboBoxStokTuru.Text == "Alım")
+                        stokTuru = "alim";
+
+                    string err = sqlController.UpdateStok(urunId, textBoxUrunAdi.Text, Convert.ToInt32(textBoxAdet.Text), Convert.ToDouble(textBoxBirimFiyat.Text), textBoxFaturaNo.Text, stokTuru);
+                    if (!string.IsNullOrEmpty(err))
+                        MessageBox.Show(err);
+                    else
+                        MessageBox.Show("Ürün Başarıyla Eklendi");
+                }
+            }
+        }
+
+        private void StokEkleUC_Load(object sender, EventArgs e)
+        {
+            comboBoxStokTuru.SelectedIndex = 0;
         }
     }
 }

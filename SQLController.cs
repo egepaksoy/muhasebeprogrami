@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Data.SQLite;
+using static System.Data.Entity.Infrastructure.Design.Executor;
 
 
 namespace ProgramLibrary
@@ -40,6 +42,49 @@ namespace ProgramLibrary
                     using (SQLiteCommand cmd = new SQLiteCommand(hareketSQL, conn))
                     {
                         cmd.Parameters.AddWithValue("@urun_id", urun_id);
+                        cmd.Parameters.AddWithValue("@hareket_tipi", urunAlisTipi);
+                        cmd.Parameters.AddWithValue("@miktar", urunAdedi);
+                        cmd.Parameters.AddWithValue("@fatura_no", faturaNo);
+                        cmd.Parameters.AddWithValue("@tarih", DateTime.Now);
+
+                        cmd.ExecuteNonQuery();
+                    }
+
+                    conn.Close();
+                }
+                catch (Exception ex)
+                {
+                    return ex.Message;
+                }
+
+            }
+            return null;
+        }
+
+        public string UpdateStok(long urunId, string urunAdi, int urunAdedi, double urunFiyati, string faturaNo, string urunAlisTipi)
+        {
+            // stok kaydetme
+            using (SQLiteConnection conn = new SQLiteConnection(connectionString))
+            {
+                try
+                {
+                    conn.Open();
+                    string stokSQL = "UPDATE Stok SET urun_adi=@urun_adi, adet=@adet, fiyat=@fiyat WHERE id=@urun_id";
+
+                    using (SQLiteCommand cmd = new SQLiteCommand(stokSQL, conn))
+                    {
+                        cmd.Parameters.AddWithValue("@urun_id", urunId);
+                        cmd.Parameters.AddWithValue("@urun_adi", urunAdi);
+                        cmd.Parameters.AddWithValue("@adet", urunAdedi);
+                        cmd.Parameters.AddWithValue("@fiyat", urunFiyati);
+                        cmd.ExecuteNonQuery();
+                    }
+
+                    string hareketSQL = "INSERT INTO Stok_Hareketleri(urun_id, hareket_tipi, miktar, fatura_no, tarih) VALUES (@urun_id, @hareket_tipi, @miktar, @fatura_no, @tarih)";
+
+                    using (SQLiteCommand cmd = new SQLiteCommand(hareketSQL, conn))
+                    {
+                        cmd.Parameters.AddWithValue("@urun_id", urunId);
                         cmd.Parameters.AddWithValue("@hareket_tipi", urunAlisTipi);
                         cmd.Parameters.AddWithValue("@miktar", urunAdedi);
                         cmd.Parameters.AddWithValue("@fatura_no", faturaNo);

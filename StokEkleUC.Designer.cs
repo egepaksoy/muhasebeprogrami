@@ -119,12 +119,14 @@
             // labelFaturaNo
             // 
             labelFaturaNo.AutoSize = true;
+            labelFaturaNo.Enabled = false;
             labelFaturaNo.Font = new Font("Segoe UI", 12F);
             labelFaturaNo.Location = new Point(94, 423);
             labelFaturaNo.Name = "labelFaturaNo";
             labelFaturaNo.Size = new Size(78, 21);
             labelFaturaNo.TabIndex = 8;
             labelFaturaNo.Text = "Fatura No";
+            labelFaturaNo.Visible = false;
             // 
             // label4
             // 
@@ -163,6 +165,7 @@
             Controls.Add(textBoxUrunAdi);
             Name = "StokEkleUC";
             Size = new Size(540, 680);
+            Load += StokEkleUC_Load;
             ResumeLayout(false);
             PerformLayout();
         }

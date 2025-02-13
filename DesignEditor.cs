@@ -36,6 +36,21 @@ namespace ProgramLibrary
             btn.FlatAppearance.MouseOverBackColor = MouseOverColor;
         }
 
+        public void BtnEditor(List<Button> btns, Color ForeColor, Color BackColor, Color MouseOverColor, Color mouseDownColor)
+        {
+            foreach (var btn in btns)
+            {
+                btn.FlatStyle = FlatStyle.Flat;
+                btn.FlatAppearance.BorderSize = 0;
+                btn.BackColor = BackColor;
+
+                btn.ForeColor = ForeColor;
+
+                btn.FlatAppearance.MouseDownBackColor = mouseDownColor;
+                btn.FlatAppearance.MouseOverBackColor = MouseOverColor;
+            }
+        }
+
         public void BtnEditor()
         {
             Color foreColor = Color.White;

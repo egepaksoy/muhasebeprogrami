@@ -15,11 +15,17 @@ namespace Muhasebe_Programı
 {
     public partial class StokUC : UserControl
     {
+        SQLController sqlController = new SQLController("D:\\PROJELER\\Muhasebe Programı\\muhasebe.db");
+        DesignEditor designEditor;
+
         List<Button> StokButtons = new List<Button>();
         List<string> Urunler = new List<string>();
 
-        SQLController sqlController = new SQLController("D:\\PROJELER\\Muhasebe Programı\\muhasebe.db");
-        DesignEditor designEditor;
+        Color foreColor = Color.White;
+
+        Color backColor = Color.FromArgb(0x4E, 0x5D, 0x6B);
+        Color mouseOverColor = Color.FromArgb(0xB3, 0xBE, 0xC7);
+        Color mouseDownColor = Color.FromArgb(0x4E, 0x5D, 0x6B);
 
         int butonGenislik = 170;
         int butonYukseklik = 170;
@@ -37,16 +43,20 @@ namespace Muhasebe_Programı
             InitializeComponent();
         }
 
-        private void StokUC_Load(object sender, EventArgs e)
+        private void RemoveButtons()
         {
-            designEditor = new DesignEditor();
+            foreach (Control btn in StokButtons)
+            {
+                this.Controls.Remove(btn);
+                btn.Dispose();
+            }
+        }
 
-            Color foreColor = Color.White;
-
-            Color backColor = Color.FromArgb(0x4E, 0x5D, 0x6B);
-            Color mouseOverColor = Color.FromArgb(0xB3, 0xBE, 0xC7);
-            Color mouseDownColor = Color.FromArgb(0x4E, 0x5D, 0x6B);
-            designEditor.BtnEditor(btnStokEkle, foreColor, backColor, mouseOverColor, mouseDownColor);
+        private void RenderStok()
+        {
+            RemoveButtons();
+            StokButtons.Clear();
+            Urunler.Clear();
 
             Urunler = sqlController.LoadStok();
 
@@ -56,12 +66,12 @@ namespace Muhasebe_Programı
             string urunAdi;
             for (int i = 1; i <= Urunler.Count; i++)
             {
-                urunAdi = Urunler[i-1];
+                urunAdi = Urunler[i - 1];
                 Button btn = new Button();
+                btn.Name = $"btnUrun{urunAdi}";
                 btn.Text = urunAdi;
                 btn.Size = new Size(butonGenislik, butonYukseklik);
-                btn.Font = new Font("Arial", 10, FontStyle.Bold);
-                btn.BackColor = Color.LightGray;
+                btn.Font = new Font("Segoe UI", 20, FontStyle.Regular);
                 btn.Click += (s, e) => btnUrun_Click(s, e);
 
                 int x = baslangicX + (i % sutunSayisi) * (butonGenislik + butonlarArasiBosluk);
@@ -69,12 +79,30 @@ namespace Muhasebe_Programı
                 btn.Location = new Point(x, y);
 
                 this.Controls.Add(btn);
+                StokButtons.Add(btn);
             }
+            designEditor.BtnEditor(StokButtons, foreColor, backColor, mouseOverColor, mouseDownColor);
+        }
+
+        private void StokUC_Load(object sender, EventArgs e)
+        {
+            designEditor = new DesignEditor();
+            designEditor.BtnEditor(btnStokEkle, foreColor, backColor, mouseOverColor, mouseDownColor);
+
+            RenderStok();
         }
 
         private void btnUrun_Click(object sender, EventArgs e)
         {
+            string urun_adi = (sender as Button).Text;
 
+            if (!formStokEkle.Created)
+            {
+                formStokEkle = new EkScreen(new StokEkleUC(urun_adi));
+                formStokEkle.ShowDialog();
+            }
+
+            RenderStok();
         }
 
         private void btnStokEkle_Click(object sender, EventArgs e)
@@ -84,6 +112,8 @@ namespace Muhasebe_Programı
                 formStokEkle = new EkScreen(new StokEkleUC());
                 formStokEkle.ShowDialog();
             }
+
+            RenderStok();
         }
     }
 }
