@@ -1,0 +1,6 @@
+﻿stoklara ürün ekleme
+carileri düzenleme
+kasaları düzenleme
+satış yapmaya
+taksitleri görüntüleme
+eski satışları görüntüleme

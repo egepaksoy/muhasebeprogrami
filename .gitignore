@@ -1,0 +1,41 @@
+# Derleme ve çalışma zamanı dosyaları
+bin/
+obj/
+
+# Kullanıcıya özel ayarlar
+*.user
+*.suo
+*.userprefs
+
+# NuGet paketleri
+packages/
+
+# Visual Studio dosyaları
+.vs/
+*.csproj.user
+*.vbproj.user
+*.sln
+*.njsproj
+*.swp
+
+# Veritabanı dosyaları
+*.db
+*.sqlite
+
+# Log dosyaları
+*.log
+
+# Derleme çıktıları
+Debug/
+Release/
+
+# IDE özel dosyalar
+.idea/
+.vscode/
+
+# Diğer
+*.cache
+*.bak
+*.tmp
+*.orig
+*.patch
