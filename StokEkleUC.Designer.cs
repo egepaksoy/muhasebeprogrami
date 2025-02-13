@@ -39,7 +39,6 @@
             labelFaturaNo = new Label();
             label4 = new Label();
             label5 = new Label();
-            button1 = new Button();
             SuspendLayout();
             // 
             // textBoxUrunAdi
@@ -147,21 +146,10 @@
             label5.TabIndex = 10;
             label5.Text = "Ürün Adedi";
             // 
-            // button1
-            // 
-            button1.Location = new Point(0, 0);
-            button1.Name = "button1";
-            button1.Size = new Size(75, 23);
-            button1.TabIndex = 11;
-            button1.Text = "button1";
-            button1.UseVisualStyleBackColor = true;
-            button1.Click += button1_Click;
-            // 
             // StokEkleUC
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            Controls.Add(button1);
             Controls.Add(label5);
             Controls.Add(label4);
             Controls.Add(labelFaturaNo);
@@ -192,6 +180,5 @@
         private Label labelFaturaNo;
         private Label label4;
         private Label label5;
-        private Button button1;
     }
 }

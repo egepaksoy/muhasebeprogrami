@@ -82,18 +82,5 @@ namespace Muhasebe_Programı
                     MessageBox.Show("Ürün Başarıyla Eklendi");
             }
         }
-
-        private void button1_Click(object sender, EventArgs e)
-        {
-            List<List<string>> stoktakiler = sqlController.GetStok();
-
-            if (stoktakiler != null)
-            {
-                for (int i = 0; i < stoktakiler.Count; i++)
-                {
-                    MessageBox.Show(stoktakiler[i][1]);
-                }
-            }
-        }
     }
 }

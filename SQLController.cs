@@ -84,6 +84,31 @@ namespace ProgramLibrary
             return null;
         }
 
+        public List<string> LoadStok()
+        {
+            List<String> StokElemanlari = new List<String>();
+
+            using (SQLiteConnection conn = new SQLiteConnection(connectionString))
+            {
+                conn.Open();
+                string sql = $"SELECT urun_adi FROM Stok";
+                using (SQLiteCommand cmd = new SQLiteCommand(sql, conn))
+                {
+                    using (SQLiteDataReader reader = cmd.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            StokElemanlari.Add(reader["urun_adi"].ToString());
+                        }
+                    }
+                }
+            }
+
+            if (StokElemanlari.Count > 0)
+                return StokElemanlari;
+            return null;
+        }
+
         public List<string> GetStok(string urun_adi)
         {
             List<string> StokBilgileri = null; // Başlangıçta null
