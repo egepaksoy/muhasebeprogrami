@@ -4,6 +4,28 @@ import sqlite3
 conn = sqlite3.connect("muhasebe.db")
 cursor = conn.cursor()
 
+cursor.execute("""
+DROP TABLE IF EXISTS Cariler
+""")
+cursor.execute("""
+DROP TABLE IF EXISTS Kasalar
+""")
+cursor.execute("""
+DROP TABLE IF EXISTS Stok
+""")
+cursor.execute("""
+DROP TABLE IF EXISTS Stok_Hareketleri
+""")
+cursor.execute("""
+DROP TABLE IF EXISTS Satislar
+""")
+cursor.execute("""
+DROP TABLE IF EXISTS Taksitler
+""")
+cursor.execute("""
+DROP TABLE IF EXISTS Odemeler
+""")
+
 # Tabloları oluştur
 cursor.execute("""
 CREATE TABLE IF NOT EXISTS Cariler (
@@ -39,8 +61,7 @@ CREATE TABLE IF NOT EXISTS Stok_Hareketleri (
     hareket_tipi TEXT CHECK(hareket_tipi IN ('sayim', 'alim')),
     miktar INTEGER NOT NULL,
     fatura_no TEXT,
-    tarih TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (urun_id) REFERENCES Stok(id) ON DELETE CASCADE
+    tarih TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 )
 """)
 
@@ -53,10 +74,7 @@ CREATE TABLE IF NOT EXISTS Satislar (
     adet INTEGER NOT NULL,
     toplam_tutar INTEGER NOT NULL,
     tarih TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    odeme_tipi VARCHAR CHECK(odeme_tipi IN ('pesin', 'taksit')),
-    FOREIGN KEY (cari_id) REFERENCES Cariler(id) ON DELETE CASCADE,
-    FOREIGN KEY (urun_id) REFERENCES Stok(id) ON DELETE CASCADE,
-    FOREIGN KEY (kasa_id) REFERENCES Kasalar(id) ON DELETE CASCADE
+    odeme_tipi VARCHAR CHECK(odeme_tipi IN ('pesin', 'taksit'))
 )
 """)
 
@@ -68,8 +86,7 @@ CREATE TABLE IF NOT EXISTS Taksitler (
     ilk_odeme TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     kalan_tutar INTEGER NOT NULL,
     taksit_sayisi INTEGER NOT NULL,
-    vade_tipi TEXT CHECK(vade_tipi IN ('aylik', 'haftalik')),
-    FOREIGN KEY (cari_id) REFERENCES Cariler(id) ON DELETE CASCADE
+    vade_tipi TEXT CHECK(vade_tipi IN ('aylik', 'haftalik'))
 )
 """)
 
@@ -78,8 +95,7 @@ CREATE TABLE IF NOT EXISTS Odemeler (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     taksit_id INTEGER NOT NULL,
     odeme_miktari INTEGER NOT NULL,
-    odeme_tarihi TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (taksit_id) REFERENCES Taksitler(id) ON DELETE CASCADE
+    odeme_tarihi TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 )
 """)
 

@@ -4,3 +4,4 @@ kasaları düzenleme
 satış yapmaya
 taksitleri görüntüleme
 eski satışları görüntüleme
+stok geçmişi goruntuleme
