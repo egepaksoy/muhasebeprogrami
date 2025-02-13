@@ -18,10 +18,6 @@ packages/
 *.njsproj
 *.swp
 
-# Veritabanı dosyaları
-*.db
-*.sqlite
-
 # Log dosyaları
 *.log
 
