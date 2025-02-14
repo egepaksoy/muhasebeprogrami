@@ -49,7 +49,7 @@
             // 
             label1.AutoSize = true;
             label1.Font = new Font("Segoe UI Semibold", 24F, FontStyle.Bold, GraphicsUnit.Point, 162);
-            label1.Location = new Point(432, 50);
+            label1.Location = new Point(432, 30);
             label1.Name = "label1";
             label1.Size = new Size(125, 45);
             label1.TabIndex = 3;
@@ -59,6 +59,7 @@
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
+            AutoScroll = true;
             Controls.Add(label1);
             Controls.Add(btnKasaEkle);
             Name = "KasaUC";

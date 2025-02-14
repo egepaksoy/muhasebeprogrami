@@ -55,15 +55,20 @@ namespace Muhasebe_Programı
         private void RenderStok()
         {
             RemoveButtons();
-            StokButtons.Clear();
-            Urunler.Clear();
+            if (StokButtons != null)
+                StokButtons.Clear();
+            if (Urunler != null)
+                Urunler.Clear();
 
-            Urunler = sqlController.LoadStok();
+            Urunler = sqlController.LoadStoklar();
 
             int toplamButonGenislik = sutunSayisi * butonGenislik;
             butonlarArasiBosluk = (panelGenislik - (2 * baslangicX) - toplamButonGenislik) / (sutunSayisi - 1);
 
             string urunAdi;
+
+            if (Urunler == null)
+                return;
             for (int i = 1; i <= Urunler.Count; i++)
             {
                 urunAdi = Urunler[i - 1];

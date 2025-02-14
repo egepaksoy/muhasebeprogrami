@@ -39,6 +39,7 @@
             labelFaturaNo = new Label();
             label4 = new Label();
             label5 = new Label();
+            btnSil = new Button();
             SuspendLayout();
             // 
             // textBoxUrunAdi
@@ -69,7 +70,7 @@
             // 
             btnStokKaydet.Location = new Point(94, 560);
             btnStokKaydet.Name = "btnStokKaydet";
-            btnStokKaydet.Size = new Size(352, 49);
+            btnStokKaydet.Size = new Size(297, 49);
             btnStokKaydet.TabIndex = 3;
             btnStokKaydet.Text = "Kaydet";
             btnStokKaydet.UseVisualStyleBackColor = true;
@@ -148,10 +149,21 @@
             label5.TabIndex = 10;
             label5.Text = "Ürün Adedi";
             // 
+            // btnSil
+            // 
+            btnSil.Location = new Point(397, 560);
+            btnSil.Name = "btnSil";
+            btnSil.Size = new Size(49, 49);
+            btnSil.TabIndex = 11;
+            btnSil.Text = "Sil";
+            btnSil.UseVisualStyleBackColor = true;
+            btnSil.Click += btnSil_Click;
+            // 
             // StokEkleUC
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
+            Controls.Add(btnSil);
             Controls.Add(label5);
             Controls.Add(label4);
             Controls.Add(labelFaturaNo);
@@ -183,5 +195,6 @@
         private Label labelFaturaNo;
         private Label label4;
         private Label label5;
+        private Button btnSil;
     }
 }

@@ -15,9 +15,91 @@ namespace ProgramLibrary
             connectionString = $"Data Source={dbPath};Version=3;";
         }
 
+        public string NewKasa(string kasaAdi, double bakiye)
+        {
+            using (SQLiteConnection conn = new SQLiteConnection(connectionString))
+            {
+                try
+                {
+                    long urun_id;
+                    conn.Open();
+                    string stokSQL = "INSERT INTO Kasalar(kasa_adi, bakiye) VALUES (@kasa_adi, @bakiye)";
+
+                    using (SQLiteCommand cmd = new SQLiteCommand(stokSQL, conn))
+                    {
+                        cmd.Parameters.AddWithValue("@kasa_adi", kasaAdi);
+                        cmd.Parameters.AddWithValue("@bakiye", bakiye);
+                        cmd.ExecuteNonQuery();
+                    }
+
+                    conn.Close();
+                }
+                catch (Exception ex)
+                {
+                    return ex.Message;
+                }
+
+            }
+            return null;
+        }
+
+        public string UpdateKasa(long KasaId, string KasaAdi, double KasaBakiye)
+        {
+            using (SQLiteConnection conn = new SQLiteConnection(connectionString))
+            {
+                try
+                {
+                    conn.Open();
+                    string stokSQL = "UPDATE Kasalar SET kasa_adi=@kasa_adi, bakiye=@bakiye WHERE id=@kasa_id";
+
+                    using (SQLiteCommand cmd = new SQLiteCommand(stokSQL, conn))
+                    {
+                        cmd.Parameters.AddWithValue("@kasa_id", KasaId);
+                        cmd.Parameters.AddWithValue("@kasa_adi", KasaAdi);
+                        cmd.Parameters.AddWithValue("@bakiye", KasaBakiye);
+                        cmd.ExecuteNonQuery();
+                    }
+                    conn.Close();
+                }
+                catch (Exception ex)
+                {
+                    return ex.Message;
+                }
+
+            }
+            return null;
+        }
+
+        public List<string> GetKasa(string kasaAdi)
+        {
+            List<string> KasaBilgileri = null;
+            using (SQLiteConnection conn = new SQLiteConnection(connectionString))
+            {
+                conn.Open();
+                string sql = "SELECT * FROM Kasalar WHERE kasa_adi = @kasa_adi";
+                using (SQLiteCommand cmd = new SQLiteCommand(sql, conn))
+                {
+                    cmd.Parameters.AddWithValue("@kasa_adi", kasaAdi);
+
+                    using (SQLiteDataReader reader = cmd.ExecuteReader())
+                    {
+                        if (reader.Read())
+                        {
+                            KasaBilgileri = new List<string>
+                            {
+                                reader["id"].ToString(),
+                                reader["kasa_adi"].ToString(),
+                                reader["bakiye"].ToString()
+                            };
+                        }
+                    }
+                }
+            }
+            return KasaBilgileri;
+        }
+
         public string NewStok(string urunAdi, int urunAdedi, double urunFiyati, string faturaNo, string urunAlisTipi)
         {
-            // stok kaydetme
             using (SQLiteConnection conn = new SQLiteConnection(connectionString))
             {
                 try
@@ -63,7 +145,6 @@ namespace ProgramLibrary
 
         public string UpdateStok(long urunId, string urunAdi, int urunAdedi, double urunFiyati, string faturaNo, string urunAlisTipi)
         {
-            // stok kaydetme
             using (SQLiteConnection conn = new SQLiteConnection(connectionString))
             {
                 try
@@ -104,32 +185,81 @@ namespace ProgramLibrary
             return null;
         }
 
-        public List<List<String>> GetStok()
+        public List<string> LoadKasalar()
         {
-            List<List<String>> StokElemanlari = new List<List<String>>();
-            
+            List<String> KasaElemanlari = new List<String>();
+
             using (SQLiteConnection conn = new SQLiteConnection(connectionString))
             {
                 conn.Open();
-                string sql = $"SELECT * FROM Stok";
+                string sql = $"SELECT kasa_adi FROM Kasalar";
                 using (SQLiteCommand cmd = new SQLiteCommand(sql, conn))
                 {
                     using (SQLiteDataReader reader = cmd.ExecuteReader())
                     {
                         while (reader.Read())
                         {
-                            StokElemanlari.Add([reader["id"].ToString(), reader["urun_adi"].ToString(), reader["adet"].ToString(), reader["fiyat"].ToString()]);
+                            KasaElemanlari.Add(reader["kasa_adi"].ToString());
                         }
                     }
                 }
             }
 
-            if (StokElemanlari.Count > 0)
-                return StokElemanlari;
+            if (KasaElemanlari.Count > 0)
+                return KasaElemanlari;
             return null;
         }
 
-        public List<string> LoadStok()
+        public bool DeleteKasa(long kasa_id)
+        {
+            using (SQLiteConnection conn = new SQLiteConnection(connectionString))
+            {
+                conn.Open();
+                string sql = $"DELETE FROM Kasalar WHERE id = @kasa_id";
+
+                using (SQLiteCommand cmd = new SQLiteCommand(sql, conn))
+                {
+                    cmd.Parameters.AddWithValue("@kasa_id", kasa_id);
+                    int rowsAffected = cmd.ExecuteNonQuery();
+
+                    if (rowsAffected == 0)
+                        return false;
+                    else
+                        return true;
+                }
+            }
+        }
+
+        public List<string> GetStok(string urun_adi)
+        {
+            List<string> StokBilgileri = null;
+            using (SQLiteConnection conn = new SQLiteConnection(connectionString))
+            {
+                conn.Open();
+                string sql = "SELECT * FROM Stok WHERE urun_adi = @urun_adi";
+                using (SQLiteCommand cmd = new SQLiteCommand(sql, conn))
+                {
+                    cmd.Parameters.AddWithValue("@urun_adi", urun_adi);
+
+                    using (SQLiteDataReader reader = cmd.ExecuteReader())
+                    {
+                        if (reader.Read())
+                        {
+                            StokBilgileri = new List<string>
+                            {
+                                reader["id"].ToString(),
+                                reader["urun_adi"].ToString(),
+                                reader["adet"].ToString(),
+                                reader["fiyat"].ToString()
+                            };
+                        }
+                    }
+                }
+            }
+            return StokBilgileri;
+        }
+
+        public List<string> LoadStoklar()
         {
             List<String> StokElemanlari = new List<String>();
 
@@ -154,33 +284,24 @@ namespace ProgramLibrary
             return null;
         }
 
-        public List<string> GetStok(string urun_adi)
+        public bool DeleteStok(long stok_id)
         {
-            List<string> StokBilgileri = null; // Başlangıçta null
             using (SQLiteConnection conn = new SQLiteConnection(connectionString))
             {
                 conn.Open();
-                string sql = "SELECT * FROM Stok WHERE urun_adi = @urun_adi";
+                string sql = $"DELETE FROM Stok WHERE id = @stok_id";
+
                 using (SQLiteCommand cmd = new SQLiteCommand(sql, conn))
                 {
-                    cmd.Parameters.AddWithValue("@urun_adi", urun_adi); // Parametre kullanımı
+                    cmd.Parameters.AddWithValue("@stok_id", stok_id);
+                    int rowsAffected = cmd.ExecuteNonQuery();
 
-                    using (SQLiteDataReader reader = cmd.ExecuteReader())
-                    {
-                        if (reader.Read()) // Eğer veri varsa
-                        {
-                            StokBilgileri = new List<string>
-                            {
-                                reader["id"].ToString(),
-                                reader["urun_adi"].ToString(),
-                                reader["adet"].ToString(),
-                                reader["fiyat"].ToString()
-                            };
-                        }
-                    }
+                    if (rowsAffected == 0)
+                        return false;
+                    else
+                        return true;
                 }
             }
-            return StokBilgileri;
         }
     }
 }

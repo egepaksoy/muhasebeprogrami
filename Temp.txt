@@ -1,6 +1,6 @@
 ﻿-stoklara ürün ekleme
-stoklarda urun gosterme
-stoklarda urun duzeltme guncelleme
+-stoklarda urun gosterme
+-stoklarda urun duzeltme guncelleme
 carileri düzenleme
 kasaları düzenleme
 satış yapmaya
