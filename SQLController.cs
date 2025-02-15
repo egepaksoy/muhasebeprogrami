@@ -8,12 +8,14 @@ namespace ProgramLibrary
 {
     public class SQLController
     {
-        private readonly string connectionString;
+        private readonly string connectionString = "D:\\PROJELER\\Muhasebe Programı\\muhasebe.db";
 
         public SQLController(string dbPath)
         {
             connectionString = $"Data Source={dbPath};Version=3;";
         }
+
+        public SQLController() { }
 
         public string NewCari(string cariAdi, string cariTelefonu, string cariAdresi)
         {

@@ -32,16 +32,12 @@
             textBoxTelefonu = new TextBox();
             textBoxAdresi = new TextBox();
             btnCariKaydet = new Button();
-            panel1 = new Panel();
-            button4 = new Button();
-            button3 = new Button();
-            button2 = new Button();
             label1 = new Label();
             label2 = new Label();
             label3 = new Label();
             label4 = new Label();
             label5 = new Label();
-            panel1.SuspendLayout();
+            panelCariler = new Panel();
             SuspendLayout();
             // 
             // textBoxCariAdi
@@ -84,66 +80,6 @@
             btnCariKaydet.Text = "Kaydet";
             btnCariKaydet.UseVisualStyleBackColor = true;
             btnCariKaydet.Click += btnCariKaydet_Click;
-            // 
-            // panel1
-            // 
-            panel1.BackColor = Color.FromArgb(217, 217, 217);
-            panel1.Controls.Add(button4);
-            panel1.Controls.Add(button3);
-            panel1.Controls.Add(button2);
-            panel1.Location = new Point(573, 105);
-            panel1.Margin = new Padding(0);
-            panel1.Name = "panel1";
-            panel1.Size = new Size(360, 526);
-            panel1.TabIndex = 6;
-            // 
-            // button4
-            // 
-            button4.BackColor = Color.FromArgb(44, 62, 80);
-            button4.FlatStyle = FlatStyle.Popup;
-            button4.Font = new Font("Segoe UI", 12F);
-            button4.ForeColor = Color.White;
-            button4.Location = new Point(25, 113);
-            button4.Margin = new Padding(0);
-            button4.Name = "button4";
-            button4.Padding = new Padding(10, 0, 0, 0);
-            button4.Size = new Size(310, 33);
-            button4.TabIndex = 2;
-            button4.Text = "button4";
-            button4.TextAlign = ContentAlignment.MiddleLeft;
-            button4.UseVisualStyleBackColor = false;
-            // 
-            // button3
-            // 
-            button3.BackColor = Color.FromArgb(44, 62, 80);
-            button3.FlatStyle = FlatStyle.Popup;
-            button3.Font = new Font("Segoe UI", 12F);
-            button3.ForeColor = Color.White;
-            button3.Location = new Point(25, 70);
-            button3.Margin = new Padding(0);
-            button3.Name = "button3";
-            button3.Padding = new Padding(10, 0, 0, 0);
-            button3.Size = new Size(310, 33);
-            button3.TabIndex = 1;
-            button3.Text = "button3";
-            button3.TextAlign = ContentAlignment.MiddleLeft;
-            button3.UseVisualStyleBackColor = false;
-            // 
-            // button2
-            // 
-            button2.BackColor = Color.FromArgb(44, 62, 80);
-            button2.FlatStyle = FlatStyle.Popup;
-            button2.Font = new Font("Segoe UI", 12F);
-            button2.ForeColor = Color.White;
-            button2.Location = new Point(25, 27);
-            button2.Margin = new Padding(0);
-            button2.Name = "button2";
-            button2.Padding = new Padding(10, 0, 0, 0);
-            button2.Size = new Size(310, 33);
-            button2.TabIndex = 0;
-            button2.Text = "button2";
-            button2.TextAlign = ContentAlignment.MiddleLeft;
-            button2.UseVisualStyleBackColor = false;
             // 
             // label1
             // 
@@ -195,17 +131,26 @@
             label5.TabIndex = 13;
             label5.Text = "Adresi";
             // 
+            // panelCariler
+            // 
+            panelCariler.BackColor = Color.FromArgb(217, 217, 217);
+            panelCariler.Location = new Point(573, 105);
+            panelCariler.Margin = new Padding(0);
+            panelCariler.Name = "panelCariler";
+            panelCariler.Size = new Size(360, 526);
+            panelCariler.TabIndex = 6;
+            // 
             // CarilerUC
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            BackColor = SystemColors.Control;
+            BackColor = Color.FromArgb(224, 231, 239);
             Controls.Add(label5);
             Controls.Add(label4);
             Controls.Add(label3);
             Controls.Add(label2);
             Controls.Add(label1);
-            Controls.Add(panel1);
+            Controls.Add(panelCariler);
             Controls.Add(btnCariKaydet);
             Controls.Add(textBoxAdresi);
             Controls.Add(textBoxTelefonu);
@@ -213,7 +158,6 @@
             Name = "CarilerUC";
             Size = new Size(995, 681);
             Load += CarilerUC_Load;
-            panel1.ResumeLayout(false);
             ResumeLayout(false);
             PerformLayout();
         }
@@ -224,14 +168,11 @@
         private TextBox textBoxTelefonu;
         private TextBox textBoxAdresi;
         private Button btnCariKaydet;
-        private Panel panel1;
-        private Button button2;
-        private Button button3;
-        private Button button4;
         private Label label1;
         private Label label2;
         private Label label3;
         private Label label4;
         private Label label5;
+        private Panel panelCariler;
     }
 }

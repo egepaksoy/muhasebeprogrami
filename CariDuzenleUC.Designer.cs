@@ -276,6 +276,7 @@
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
+            BackColor = Color.FromArgb(224, 231, 239);
             Controls.Add(panelSatislar);
             Controls.Add(label6);
             Controls.Add(panelTaksitler);
@@ -290,6 +291,7 @@
             Controls.Add(textBoxCariAdi);
             Name = "CariDuzenleUC";
             Size = new Size(995, 681);
+            Load += CariDuzenleUC_Load;
             panelTaksitler.ResumeLayout(false);
             panelSatislar.ResumeLayout(false);
             ResumeLayout(false);

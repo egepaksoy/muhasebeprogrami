@@ -26,6 +26,7 @@ namespace Muhasebe_Programı
             InitializeComponent();
             userControl = UC;
             this.Size = size;
+            mainPanel.Size = Size;
         }
 
         private void EkScreen_Load(object sender, EventArgs e)

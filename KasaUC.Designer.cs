@@ -60,6 +60,7 @@
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             AutoScroll = true;
+            BackColor = Color.FromArgb(224, 231, 239);
             Controls.Add(label1);
             Controls.Add(btnKasaEkle);
             Name = "KasaUC";
