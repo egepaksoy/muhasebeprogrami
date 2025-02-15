@@ -84,7 +84,7 @@ namespace Muhasebe_Programı
                     if (!string.IsNullOrEmpty(err))
                         MessageBox.Show(err);
                     else
-                        MessageBox.Show("Kasa Başarıyla Eklendi");
+                        ReturnOrigin();
                 }
             }
             else
@@ -96,9 +96,25 @@ namespace Muhasebe_Programı
                         string err = sqlController.UpdateKasa(KasaId, textBoxKasaAdi.Text.ToLower(), Convert.ToDouble(textBoxBakiye.Text));
                         if (!string.IsNullOrEmpty(err))
                             MessageBox.Show(err);
-                        else
-                            MessageBox.Show("Kasa Başarıyla Düzenlendi");
                     }
+                }
+            }
+        }
+
+        private void ReturnOrigin()
+        {
+            textBoxKasaAdi.Text = "";
+            textBoxBakiye.Text = "";
+        }
+
+        private void CloseScreen()
+        {
+            foreach (Form form in Application.OpenForms)
+            {
+                if (form.Name == "EkScreen")
+                {
+                    form.Close();
+                    break;
                 }
             }
         }
@@ -112,17 +128,7 @@ namespace Muhasebe_Programı
                 bool basarili = sqlController.DeleteKasa(KasaId);
 
                 if (basarili)
-                {
-                    MessageBox.Show("Kasa Başarı İle Silindi");
-                    foreach (Form form in Application.OpenForms)
-                    {
-                        if (form.Name == "EkScreen")
-                        {
-                            form.Close();
-                            break;
-                        }
-                    }
-                }
+                    CloseScreen();
                 else
                     MessageBox.Show("Kasa Bulunamadı!!");
             }

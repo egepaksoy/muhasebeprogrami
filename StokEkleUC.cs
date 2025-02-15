@@ -15,8 +15,12 @@ namespace Muhasebe_Programı
     {
         SQLController sqlController = new SQLController("D:\\PROJELER\\Muhasebe Programı\\muhasebe.db");
 
-        string urun_adi;
         long urunId;
+
+        string UrunAdi = "";
+        string UrunAdedi = "";
+        string UrunFiyati = "";
+        string FaturaNo = "";
 
         bool duzenlemeModu = false;
 
@@ -32,14 +36,16 @@ namespace Muhasebe_Programı
         public StokEkleUC(string urun_adi)
         {
             InitializeComponent();
-            this.urun_adi = urun_adi.Trim();
+            List<string> urun = sqlController.GetStok(urun_adi.Trim());
 
-            List<string> urun = sqlController.GetStok(urun_adi);
+            UrunAdi = urun[1];
+            UrunAdedi = urun[2];
+            UrunFiyati = urun[3];
 
             urunId = Convert.ToInt64(urun[0]);
-            textBoxUrunAdi.Text = urun[1];
-            textBoxAdet.Text = urun[2];
-            textBoxBirimFiyat.Text = urun[3];
+            textBoxUrunAdi.Text = UrunAdi;
+            textBoxAdet.Text = UrunAdedi;
+            textBoxBirimFiyat.Text = UrunFiyati;
 
             btnSil.Enabled = true;
             btnSil.Visible = true;
@@ -86,7 +92,7 @@ namespace Muhasebe_Programı
 
             if (duzenlemeModu)
             {
-                if (sqlController.GetStok(urunAdi) != null && urunAdi != urun_adi.ToLower()) Err = "Ürün mevcut";
+                if (sqlController.GetStok(urunAdi) != null && urunAdi != UrunAdi.ToLower()) Err = "Ürün mevcut";
             }
             else
             {
@@ -118,7 +124,7 @@ namespace Muhasebe_Programı
                     if (!string.IsNullOrEmpty(err))
                         MessageBox.Show(err);
                     else
-                        MessageBox.Show("Ürün Başarıyla Eklendi");
+                        ReturnOrigin();
                 }
             }
             else
@@ -132,8 +138,6 @@ namespace Muhasebe_Programı
                     string err = sqlController.UpdateStok(urunId, textBoxUrunAdi.Text.ToLower(), Convert.ToInt32(textBoxAdet.Text), Convert.ToDouble(textBoxBirimFiyat.Text), textBoxFaturaNo.Text, stokTuru);
                     if (!string.IsNullOrEmpty(err))
                         MessageBox.Show(err);
-                    else
-                        MessageBox.Show("Ürün Başarıyla Düzenlendi");
                 }
             }
         }
@@ -141,6 +145,27 @@ namespace Muhasebe_Programı
         private void StokEkleUC_Load(object sender, EventArgs e)
         {
             comboBoxStokTuru.SelectedIndex = 0;
+        }
+
+        private void ReturnOrigin()
+        {
+            textBoxUrunAdi.Text = "";
+            textBoxAdet.Text = "";
+            textBoxBirimFiyat.Text = "";
+            
+            comboBoxStokTuru.SelectedIndex = 0;
+        }
+
+        private void CloseScreen()
+        {
+            foreach (Form form in Application.OpenForms)
+            {
+                if (form.Name == "EkScreen")
+                {
+                    form.Close();
+                    break;
+                }
+            }
         }
 
         private void btnSil_Click(object sender, EventArgs e)
@@ -152,17 +177,7 @@ namespace Muhasebe_Programı
                 bool basarili = sqlController.DeleteStok(urunId);
 
                 if (basarili)
-                {
-                    MessageBox.Show("Ürün başarı ile silindi");
-                    foreach (Form form in Application.OpenForms)
-                    {
-                        if (form.Name == "EkScreen")
-                        {
-                            form.Close();
-                            break;
-                        }
-                    }
-                }
+                    CloseScreen();
                 else
                     MessageBox.Show("Ürün bulunamadı!!");
             }
