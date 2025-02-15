@@ -10,9 +10,9 @@ using System.Windows.Forms;
 
 namespace Muhasebe_Programı
 {
-    public partial class AlisUC : UserControl
+    public partial class CariDuzenleUC : UserControl
     {
-        public AlisUC()
+        public CariDuzenleUC()
         {
             InitializeComponent();
         }

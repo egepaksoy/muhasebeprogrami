@@ -21,6 +21,13 @@ namespace Muhasebe_Programı
             userControl = UC;
         }
 
+        public EkScreen(UserControl UC, Size size)
+        {
+            InitializeComponent();
+            userControl = UC;
+            this.Size = size;
+        }
+
         private void EkScreen_Load(object sender, EventArgs e)
         {
             mainPanel.Visible = true;

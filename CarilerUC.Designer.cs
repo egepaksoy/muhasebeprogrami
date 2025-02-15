@@ -28,69 +28,62 @@
         /// </summary>
         private void InitializeComponent()
         {
-            textBox1 = new TextBox();
-            textBox2 = new TextBox();
-            textBox3 = new TextBox();
-            textBox4 = new TextBox();
-            button1 = new Button();
+            textBoxCariAdi = new TextBox();
+            textBoxTelefonu = new TextBox();
+            textBoxAdresi = new TextBox();
+            btnCariKaydet = new Button();
             panel1 = new Panel();
             button4 = new Button();
             button3 = new Button();
             button2 = new Button();
             label1 = new Label();
             label2 = new Label();
+            label3 = new Label();
+            label4 = new Label();
+            label5 = new Label();
             panel1.SuspendLayout();
             SuspendLayout();
             // 
-            // textBox1
+            // textBoxCariAdi
             // 
-            textBox1.BackColor = Color.FromArgb(203, 216, 228);
-            textBox1.BorderStyle = BorderStyle.None;
-            textBox1.Font = new Font("Segoe UI", 32F);
-            textBox1.Location = new Point(61, 91);
-            textBox1.Name = "textBox1";
-            textBox1.Size = new Size(380, 57);
-            textBox1.TabIndex = 1;
+            textBoxCariAdi.BackColor = Color.FromArgb(203, 216, 228);
+            textBoxCariAdi.BorderStyle = BorderStyle.None;
+            textBoxCariAdi.Font = new Font("Segoe UI", 32F);
+            textBoxCariAdi.Location = new Point(61, 129);
+            textBoxCariAdi.Name = "textBoxCariAdi";
+            textBoxCariAdi.Size = new Size(380, 57);
+            textBoxCariAdi.TabIndex = 1;
             // 
-            // textBox2
+            // textBoxTelefonu
             // 
-            textBox2.BackColor = Color.FromArgb(203, 216, 228);
-            textBox2.BorderStyle = BorderStyle.None;
-            textBox2.Font = new Font("Segoe UI", 32F);
-            textBox2.Location = new Point(61, 192);
-            textBox2.Name = "textBox2";
-            textBox2.Size = new Size(380, 57);
-            textBox2.TabIndex = 2;
+            textBoxTelefonu.BackColor = Color.FromArgb(203, 216, 228);
+            textBoxTelefonu.BorderStyle = BorderStyle.None;
+            textBoxTelefonu.Font = new Font("Segoe UI", 32F);
+            textBoxTelefonu.Location = new Point(61, 251);
+            textBoxTelefonu.Name = "textBoxTelefonu";
+            textBoxTelefonu.Size = new Size(380, 57);
+            textBoxTelefonu.TabIndex = 2;
             // 
-            // textBox3
+            // textBoxAdresi
             // 
-            textBox3.BackColor = Color.FromArgb(203, 216, 228);
-            textBox3.BorderStyle = BorderStyle.None;
-            textBox3.Font = new Font("Segoe UI", 18F);
-            textBox3.Location = new Point(61, 297);
-            textBox3.Multiline = true;
-            textBox3.Name = "textBox3";
-            textBox3.Size = new Size(380, 57);
-            textBox3.TabIndex = 3;
+            textBoxAdresi.BackColor = Color.FromArgb(203, 216, 228);
+            textBoxAdresi.BorderStyle = BorderStyle.None;
+            textBoxAdresi.Font = new Font("Segoe UI", 18F);
+            textBoxAdresi.Location = new Point(61, 382);
+            textBoxAdresi.Multiline = true;
+            textBoxAdresi.Name = "textBoxAdresi";
+            textBoxAdresi.Size = new Size(380, 57);
+            textBoxAdresi.TabIndex = 3;
             // 
-            // textBox4
+            // btnCariKaydet
             // 
-            textBox4.BackColor = Color.FromArgb(203, 216, 228);
-            textBox4.BorderStyle = BorderStyle.None;
-            textBox4.Font = new Font("Segoe UI", 32F);
-            textBox4.Location = new Point(61, 397);
-            textBox4.Name = "textBox4";
-            textBox4.Size = new Size(380, 57);
-            textBox4.TabIndex = 4;
-            // 
-            // button1
-            // 
-            button1.Location = new Point(61, 589);
-            button1.Name = "button1";
-            button1.Size = new Size(119, 42);
-            button1.TabIndex = 5;
-            button1.Text = "button1";
-            button1.UseVisualStyleBackColor = true;
+            btnCariKaydet.Location = new Point(61, 589);
+            btnCariKaydet.Name = "btnCariKaydet";
+            btnCariKaydet.Size = new Size(380, 42);
+            btnCariKaydet.TabIndex = 5;
+            btnCariKaydet.Text = "Kaydet";
+            btnCariKaydet.UseVisualStyleBackColor = true;
+            btnCariKaydet.Click += btnCariKaydet_Click;
             // 
             // panel1
             // 
@@ -98,10 +91,10 @@
             panel1.Controls.Add(button4);
             panel1.Controls.Add(button3);
             panel1.Controls.Add(button2);
-            panel1.Location = new Point(579, 59);
+            panel1.Location = new Point(573, 105);
             panel1.Margin = new Padding(0);
             panel1.Name = "panel1";
-            panel1.Size = new Size(360, 572);
+            panel1.Size = new Size(360, 526);
             panel1.TabIndex = 6;
             // 
             // button4
@@ -156,7 +149,7 @@
             // 
             label1.AutoSize = true;
             label1.Font = new Font("Segoe UI Semibold", 24F, FontStyle.Bold, GraphicsUnit.Point, 162);
-            label1.Location = new Point(702, 10);
+            label1.Location = new Point(695, 30);
             label1.Name = "label1";
             label1.Size = new Size(114, 45);
             label1.TabIndex = 9;
@@ -166,25 +159,57 @@
             // 
             label2.AutoSize = true;
             label2.Font = new Font("Segoe UI Semibold", 24F, FontStyle.Bold, GraphicsUnit.Point, 162);
-            label2.Location = new Point(186, 10);
+            label2.Location = new Point(186, 30);
             label2.Name = "label2";
             label2.Size = new Size(145, 45);
             label2.TabIndex = 10;
             label2.Text = "Cari Ekle";
+            // 
+            // label3
+            // 
+            label3.AutoSize = true;
+            label3.Font = new Font("Segoe UI", 12F);
+            label3.Location = new Point(61, 105);
+            label3.Name = "label3";
+            label3.Size = new Size(65, 21);
+            label3.TabIndex = 11;
+            label3.Text = "Cari Adı";
+            // 
+            // label4
+            // 
+            label4.AutoSize = true;
+            label4.Font = new Font("Segoe UI", 12F);
+            label4.Location = new Point(61, 227);
+            label4.Name = "label4";
+            label4.Size = new Size(131, 21);
+            label4.TabIndex = 12;
+            label4.Text = "Telefon Numarası";
+            // 
+            // label5
+            // 
+            label5.AutoSize = true;
+            label5.Font = new Font("Segoe UI", 12F);
+            label5.Location = new Point(61, 358);
+            label5.Name = "label5";
+            label5.Size = new Size(54, 21);
+            label5.TabIndex = 13;
+            label5.Text = "Adresi";
             // 
             // CarilerUC
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = SystemColors.Control;
+            Controls.Add(label5);
+            Controls.Add(label4);
+            Controls.Add(label3);
             Controls.Add(label2);
             Controls.Add(label1);
             Controls.Add(panel1);
-            Controls.Add(button1);
-            Controls.Add(textBox4);
-            Controls.Add(textBox3);
-            Controls.Add(textBox2);
-            Controls.Add(textBox1);
+            Controls.Add(btnCariKaydet);
+            Controls.Add(textBoxAdresi);
+            Controls.Add(textBoxTelefonu);
+            Controls.Add(textBoxCariAdi);
             Name = "CarilerUC";
             Size = new Size(995, 681);
             Load += CarilerUC_Load;
@@ -195,16 +220,18 @@
 
         #endregion
 
-        private TextBox textBox1;
-        private TextBox textBox2;
-        private TextBox textBox3;
-        private TextBox textBox4;
-        private Button button1;
+        private TextBox textBoxCariAdi;
+        private TextBox textBoxTelefonu;
+        private TextBox textBoxAdresi;
+        private Button btnCariKaydet;
         private Panel panel1;
         private Button button2;
         private Button button3;
         private Button button4;
         private Label label1;
         private Label label2;
+        private Label label3;
+        private Label label4;
+        private Label label5;
     }
 }

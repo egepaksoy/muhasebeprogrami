@@ -15,13 +15,142 @@ namespace ProgramLibrary
             connectionString = $"Data Source={dbPath};Version=3;";
         }
 
+        public string NewCari(string cariAdi, string cariTelefonu, string cariAdresi)
+        {
+            using (SQLiteConnection conn = new SQLiteConnection(connectionString))
+            {
+                try
+                {
+                    conn.Open();
+                    string stokSQL = "INSERT INTO Cariler(ad_soyad, telefon, adres) VALUES (@ad_soyad, @telefon, @adres)";
+
+                    using (SQLiteCommand cmd = new SQLiteCommand(stokSQL, conn))
+                    {
+                        cmd.Parameters.AddWithValue("@ad_soyad", cariAdi);
+                        cmd.Parameters.AddWithValue("@telefon", cariTelefonu);
+                        cmd.Parameters.AddWithValue("@adres", cariAdresi);
+                        cmd.ExecuteNonQuery();
+                    }
+
+                    conn.Close();
+                }
+                catch (Exception ex)
+                {
+                    return ex.Message;
+                }
+
+            }
+            return null;
+        }
+
+        public string UpdateCari(long cariId, string cariAdi, string cariTelefonu, string cariAdresi)
+        {
+            using (SQLiteConnection conn = new SQLiteConnection(connectionString))
+            {
+                try
+                {
+                    conn.Open();
+                    string stokSQL = "UPDATE Cariler SET ad_soyad=@cariAdi, telefon=@cariTelefonu, adres=@cariAdresi WHERE id=@cari_id";
+
+                    using (SQLiteCommand cmd = new SQLiteCommand(stokSQL, conn))
+                    {
+                        cmd.Parameters.AddWithValue("@cari_id", cariId);
+                        cmd.Parameters.AddWithValue("@cariAdi", cariAdi);
+                        cmd.Parameters.AddWithValue("@cariTelefonu", cariTelefonu);
+                        cmd.Parameters.AddWithValue("@cariAdresi", cariAdresi);
+                        cmd.ExecuteNonQuery();
+                    }
+                    conn.Close();
+                }
+                catch (Exception ex)
+                {
+                    return ex.Message;
+                }
+
+            }
+            return null;
+        }
+
+        public List<string> GetCari(string cariAdi)
+        {
+            List<string> CariBilgileri = null;
+            using (SQLiteConnection conn = new SQLiteConnection(connectionString))
+            {
+                conn.Open();
+                string sql = "SELECT * FROM Cariler WHERE ad_soyad = @cari_adi";
+                using (SQLiteCommand cmd = new SQLiteCommand(sql, conn))
+                {
+                    cmd.Parameters.AddWithValue("@cari_adi", cariAdi);
+
+                    using (SQLiteDataReader reader = cmd.ExecuteReader())
+                    {
+                        if (reader.Read())
+                        {
+                            CariBilgileri = new List<string>
+                            {
+                                reader["id"].ToString(),
+                                reader["ad_soyad"].ToString(),
+                                reader["telefon"].ToString(),
+                                reader["adres"].ToString()
+                            };
+                        }
+                    }
+                }
+            }
+            return CariBilgileri;
+        }
+
+        public List<string> LoadCariler()
+        {
+            List<String> Cariler = new List<String>();
+
+            using (SQLiteConnection conn = new SQLiteConnection(connectionString))
+            {
+                conn.Open();
+                string sql = $"SELECT ad_soyad FROM Cariler";
+                using (SQLiteCommand cmd = new SQLiteCommand(sql, conn))
+                {
+                    using (SQLiteDataReader reader = cmd.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            Cariler.Add(reader["ad_soyad"].ToString());
+                        }
+                    }
+                }
+            }
+
+            if (Cariler.Count > 0)
+                return Cariler;
+            return null;
+        }
+
+        public bool DeleteCari(long cari_id)
+        {
+            using (SQLiteConnection conn = new SQLiteConnection(connectionString))
+            {
+                conn.Open();
+                string sql = $"DELETE FROM Cariler WHERE id = @cari_id";
+
+                using (SQLiteCommand cmd = new SQLiteCommand(sql, conn))
+                {
+                    cmd.Parameters.AddWithValue("@cari_id", cari_id);
+                    int rowsAffected = cmd.ExecuteNonQuery();
+
+                    if (rowsAffected == 0)
+                        return false;
+                    else
+                        return true;
+                }
+            }
+        }
+
         public string NewKasa(string kasaAdi, double bakiye)
         {
             using (SQLiteConnection conn = new SQLiteConnection(connectionString))
             {
                 try
                 {
-                    long urun_id;
                     conn.Open();
                     string stokSQL = "INSERT INTO Kasalar(kasa_adi, bakiye) VALUES (@kasa_adi, @bakiye)";
 
@@ -96,6 +225,51 @@ namespace ProgramLibrary
                 }
             }
             return KasaBilgileri;
+        }
+
+        public List<string> LoadKasalar()
+        {
+            List<String> KasaElemanlari = new List<String>();
+
+            using (SQLiteConnection conn = new SQLiteConnection(connectionString))
+            {
+                conn.Open();
+                string sql = $"SELECT kasa_adi FROM Kasalar";
+                using (SQLiteCommand cmd = new SQLiteCommand(sql, conn))
+                {
+                    using (SQLiteDataReader reader = cmd.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            KasaElemanlari.Add(reader["kasa_adi"].ToString());
+                        }
+                    }
+                }
+            }
+
+            if (KasaElemanlari.Count > 0)
+                return KasaElemanlari;
+            return null;
+        }
+
+        public bool DeleteKasa(long kasa_id)
+        {
+            using (SQLiteConnection conn = new SQLiteConnection(connectionString))
+            {
+                conn.Open();
+                string sql = $"DELETE FROM Kasalar WHERE id = @kasa_id";
+
+                using (SQLiteCommand cmd = new SQLiteCommand(sql, conn))
+                {
+                    cmd.Parameters.AddWithValue("@kasa_id", kasa_id);
+                    int rowsAffected = cmd.ExecuteNonQuery();
+
+                    if (rowsAffected == 0)
+                        return false;
+                    else
+                        return true;
+                }
+            }
         }
 
         public string NewStok(string urunAdi, int urunAdedi, double urunFiyati, string faturaNo, string urunAlisTipi)
@@ -183,51 +357,6 @@ namespace ProgramLibrary
 
             }
             return null;
-        }
-
-        public List<string> LoadKasalar()
-        {
-            List<String> KasaElemanlari = new List<String>();
-
-            using (SQLiteConnection conn = new SQLiteConnection(connectionString))
-            {
-                conn.Open();
-                string sql = $"SELECT kasa_adi FROM Kasalar";
-                using (SQLiteCommand cmd = new SQLiteCommand(sql, conn))
-                {
-                    using (SQLiteDataReader reader = cmd.ExecuteReader())
-                    {
-                        while (reader.Read())
-                        {
-                            KasaElemanlari.Add(reader["kasa_adi"].ToString());
-                        }
-                    }
-                }
-            }
-
-            if (KasaElemanlari.Count > 0)
-                return KasaElemanlari;
-            return null;
-        }
-
-        public bool DeleteKasa(long kasa_id)
-        {
-            using (SQLiteConnection conn = new SQLiteConnection(connectionString))
-            {
-                conn.Open();
-                string sql = $"DELETE FROM Kasalar WHERE id = @kasa_id";
-
-                using (SQLiteCommand cmd = new SQLiteCommand(sql, conn))
-                {
-                    cmd.Parameters.AddWithValue("@kasa_id", kasa_id);
-                    int rowsAffected = cmd.ExecuteNonQuery();
-
-                    if (rowsAffected == 0)
-                        return false;
-                    else
-                        return true;
-                }
-            }
         }
 
         public List<string> GetStok(string urun_adi)
