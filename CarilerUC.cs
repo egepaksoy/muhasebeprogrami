@@ -42,7 +42,7 @@ namespace Muhasebe_Programı
         private void CarilerUC_Load(object sender, EventArgs e)
         {
             RemoveButtons();
-            RenderKasalar();
+            RenderCariler();
         }
 
         private void RemoveButtons()
@@ -54,7 +54,7 @@ namespace Muhasebe_Programı
             }
         }
 
-        private void RenderKasalar()
+        private void RenderCariler()
         {
             RemoveButtons();
             if (cariButonlar != null)
@@ -121,7 +121,7 @@ namespace Muhasebe_Programı
                 formCariEkle.ShowDialog();
             }
 
-            RenderKasalar();
+            RenderCariler();
         }
 
         private void btnCariKaydet_Click(object sender, EventArgs e)
@@ -135,15 +135,12 @@ namespace Muhasebe_Programı
                 string errMessage = sqlController.NewCari(cariAdi, cariTelefon, cariAdres);
 
                 if (errMessage != null)
-                {
                     MessageBox.Show(errMessage);
-                }
                 else
-                {
-                    MessageBox.Show($"Cari {cariAdi} başarıyla kaydedildi");
                     ClearForm();
-                }
             }
+
+            RenderCariler();
         }
     }
 }

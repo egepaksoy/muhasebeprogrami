@@ -31,5 +31,42 @@ namespace Muhasebe_Programı
             textBoxTelefonu.Text = cari[2];
             textBoxAdresi.Text = cari[3];
         }
+
+        private bool CheckValues(string cariAdi, string cariTelefon, string cariAdres)
+        {
+            string Err = null;
+
+            if (string.IsNullOrEmpty(cariAdi))
+                Err = "Cari adını giriniz";
+            else if (sqlController.GetCari(cariAdi) != null && cariAdi != cari_adi)
+                Err = $"Cari {cariAdi} mevcut";
+
+            if (Err != null)
+            {
+                MessageBox.Show(Err);
+                return false;
+            }
+
+            return true;
+        }
+
+        private void ReturnOrigin()
+        {
+            textBoxCariAdi.Text = cari[1];
+            textBoxTelefonu.Text = cari[2];
+            textBoxAdresi.Text = cari[3];
+        }
+
+        private void btnCariGuncelle_Click(object sender, EventArgs e)
+        {
+            string cariAdi = textBoxCariAdi.Text;
+            string telefon = textBoxTelefonu.Text;
+            string adres = textBoxAdresi.Text;
+
+            if (CheckValues(cariAdi, telefon, adres))
+                sqlController.UpdateCari(Convert.ToInt64(cari[0]), cariAdi, telefon, adres);
+            else
+                ReturnOrigin();
+        }
     }
 }

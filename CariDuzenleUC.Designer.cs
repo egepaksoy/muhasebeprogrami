@@ -31,7 +31,7 @@
             label5 = new Label();
             label4 = new Label();
             label3 = new Label();
-            btnCariKaydet = new Button();
+            btnCariGuncelle = new Button();
             textBoxAdresi = new TextBox();
             textBoxTelefonu = new TextBox();
             textBoxCariAdi = new TextBox();
@@ -80,14 +80,15 @@
             label3.TabIndex = 18;
             label3.Text = "Cari Adı";
             // 
-            // btnCariKaydet
+            // btnCariGuncelle
             // 
-            btnCariKaydet.Location = new Point(61, 589);
-            btnCariKaydet.Name = "btnCariKaydet";
-            btnCariKaydet.Size = new Size(380, 42);
-            btnCariKaydet.TabIndex = 17;
-            btnCariKaydet.Text = "Kaydet";
-            btnCariKaydet.UseVisualStyleBackColor = true;
+            btnCariGuncelle.Location = new Point(61, 589);
+            btnCariGuncelle.Name = "btnCariGuncelle";
+            btnCariGuncelle.Size = new Size(380, 42);
+            btnCariGuncelle.TabIndex = 17;
+            btnCariGuncelle.Text = "Güncelle";
+            btnCariGuncelle.UseVisualStyleBackColor = true;
+            btnCariGuncelle.Click += btnCariGuncelle_Click;
             // 
             // textBoxAdresi
             // 
@@ -285,7 +286,7 @@
             Controls.Add(label5);
             Controls.Add(label4);
             Controls.Add(label3);
-            Controls.Add(btnCariKaydet);
+            Controls.Add(btnCariGuncelle);
             Controls.Add(textBoxAdresi);
             Controls.Add(textBoxTelefonu);
             Controls.Add(textBoxCariAdi);
@@ -303,7 +304,7 @@
         private Label label5;
         private Label label4;
         private Label label3;
-        private Button btnCariKaydet;
+        private Button btnCariGuncelle;
         private TextBox textBoxAdresi;
         private TextBox textBoxTelefonu;
         private TextBox textBoxCariAdi;
