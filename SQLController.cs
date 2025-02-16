@@ -204,6 +204,32 @@ namespace ProgramLibrary
             return null;
         }
 
+        public string SatisKasa(long KasaId, double YeniBakiye)
+        {
+            using (SQLiteConnection conn = new SQLiteConnection(connectionString))
+            {
+                try
+                {
+                    conn.Open();
+                    string stokSQL = "UPDATE Kasalar SET bakiye=@bakiye WHERE id=@kasa_id";
+
+                    using (SQLiteCommand cmd = new SQLiteCommand(stokSQL, conn))
+                    {
+                        cmd.Parameters.AddWithValue("@kasa_id", KasaId);
+                        cmd.Parameters.AddWithValue("@bakiye", YeniBakiye);
+                        cmd.ExecuteNonQuery();
+                    }
+                    conn.Close();
+                }
+                catch (Exception ex)
+                {
+                    return ex.Message;
+                }
+
+            }
+            return null;
+        }
+
         public List<string> GetKasa(string kasaAdi)
         {
             List<string> KasaBilgileri = null;
@@ -364,6 +390,33 @@ namespace ProgramLibrary
             return null;
         }
 
+        public string SatisStok(long urunId, int urunAdedi)
+        {
+            using (SQLiteConnection conn = new SQLiteConnection(connectionString))
+            {
+                try
+                {
+                    conn.Open();
+                    string stokSQL = "UPDATE Stok SET adet=@adet WHERE id=@urun_id";
+
+                    using (SQLiteCommand cmd = new SQLiteCommand(stokSQL, conn))
+                    {
+                        cmd.Parameters.AddWithValue("@urun_id", urunId);
+                        cmd.Parameters.AddWithValue("@adet", urunAdedi);
+                        cmd.ExecuteNonQuery();
+                    }
+
+                    conn.Close();
+                }
+                catch (Exception ex)
+                {
+                    return ex.Message;
+                }
+
+            }
+            return null;
+        }
+
         public List<string> GetStok(string urun_adi)
         {
             List<string> StokBilgileri = null;
@@ -428,6 +481,228 @@ namespace ProgramLibrary
                 using (SQLiteCommand cmd = new SQLiteCommand(sql, conn))
                 {
                     cmd.Parameters.AddWithValue("@stok_id", stok_id);
+                    int rowsAffected = cmd.ExecuteNonQuery();
+
+                    if (rowsAffected == 0)
+                        return false;
+                    else
+                        return true;
+                }
+            }
+        }
+
+        public string NewSatis(long cariId, long urunId, long kasaId, int adet, double toplamTutar, string odemeTuru)
+        {
+            using (SQLiteConnection conn = new SQLiteConnection(connectionString))
+            {
+                try
+                {
+                    if (odemeTuru.ToLower() == "nakit")
+                        odemeTuru = "pesin";
+                    else if (odemeTuru.ToLower() == "taksit")
+                        odemeTuru = "taksit";
+                    else
+                        return "Ödeme türü yanlış";
+
+                    conn.Open();
+                    string stokSQL = "INSERT INTO Satislar(cari_id, urun_id, kasa_id, adet, toplam_tutar, odeme_tipi) VALUES (@cari_id, @urun_id, @kasa_id, @adet, @toplam_tutar, @odeme_tipi)";
+
+                    using (SQLiteCommand cmd = new SQLiteCommand(stokSQL, conn))
+                    {
+                        cmd.Parameters.AddWithValue("@cari_id", cariId);
+                        cmd.Parameters.AddWithValue("@urun_id", urunId);
+                        cmd.Parameters.AddWithValue("@kasa_id", kasaId);
+                        cmd.Parameters.AddWithValue("@adet", adet);
+                        cmd.Parameters.AddWithValue("@toplam_tutar", toplamTutar);
+                        cmd.Parameters.AddWithValue("@odeme_tipi", odemeTuru);
+                        cmd.ExecuteNonQuery();
+                    }
+
+                    conn.Close();
+                }
+                catch (Exception ex)
+                {
+                    return ex.Message;
+                }
+
+            }
+            return null;
+        }
+
+        public string NewTaksit(long cariId, double toplamTutar, DateTimePicker ilkOdemeTarihi, double kalanTutar, int taksitSayisi, string vadeTipi)
+        {
+            using (SQLiteConnection conn = new SQLiteConnection(connectionString))
+            {
+                try
+                {
+                    conn.Open();
+                    string stokSQL = "INSERT INTO Taksitler(cari_id, toplam_tutar, ilk_odeme, kalan_tutar, taksit_sayisi, vade_tipi) VALUES (@cari_id, @toplam_tutar, @ilk_odeme, @kalan_tutar, @taksit_sayisi, @vade_tipi)";
+
+                    using (SQLiteCommand cmd = new SQLiteCommand(stokSQL, conn))
+                    {
+                        cmd.Parameters.AddWithValue("@cari_id", cariId);
+                        cmd.Parameters.AddWithValue("@toplam_tutar", toplamTutar);
+                        cmd.Parameters.AddWithValue("@ilk_odeme", ilkOdemeTarihi.Value.ToString("yyyy-MM-dd HH:mm:ss"));
+                        cmd.Parameters.AddWithValue("@kalan_tutar", kalanTutar);
+                        cmd.Parameters.AddWithValue("@taksit_sayisi", taksitSayisi);
+                        cmd.Parameters.AddWithValue("@vade_tipi", vadeTipi);
+                        cmd.ExecuteNonQuery();
+                    }
+
+                    conn.Close();
+                }
+                catch (Exception ex)
+                {
+                    return ex.Message;
+                }
+
+            }
+            return null;
+        }
+
+        public string UpdateTaksit(long taksitId, long cariId, double toplamTutar, DateTimePicker ilkOdemeTarihi, double kalanTutar, int taksitSayisi, string vadeTipi)
+        {
+            using (SQLiteConnection conn = new SQLiteConnection(connectionString))
+            {
+                try
+                {
+                    conn.Open();
+                    string stokSQL = "UPDATE Taksitler SET cari_id=@cari_id, toplam_tutar=@toplam_tutar, ilk_odeme=@ilk_odeme, kalan_tutar=@kalan_tutar, taksit_sayisi=@taksit_sayisi, vade_tipi=@vade_tipi WHERE id=@taksit_id";
+
+                    using (SQLiteCommand cmd = new SQLiteCommand(stokSQL, conn))
+                    {
+                        cmd.Parameters.AddWithValue("@id", taksitId);
+                        cmd.Parameters.AddWithValue("@cari_id", cariId);
+                        cmd.Parameters.AddWithValue("@toplam_tutar", toplamTutar);
+                        cmd.Parameters.AddWithValue("@ilk_odeme", ilkOdemeTarihi.Value.ToString("yyyy-MM-dd HH:mm:ss"));
+                        cmd.Parameters.AddWithValue("@kalan_tutar", kalanTutar);
+                        cmd.Parameters.AddWithValue("@taksit_sayisi", taksitSayisi);
+                        cmd.Parameters.AddWithValue("@vade_tipi", vadeTipi);
+                        cmd.ExecuteNonQuery();
+                    }
+                    conn.Close();
+                }
+                catch (Exception ex)
+                {
+                    return ex.Message;
+                }
+
+            }
+            return null;
+        }
+
+        public List<List<string>> GetTaksit(string cariAdi)
+        {
+            List<List<string>> TaksitBilgileri = new List<List<string>>();
+            using (SQLiteConnection conn = new SQLiteConnection(connectionString))
+            {
+                long cariId = Convert.ToInt64(this.GetCari(cariAdi)[0]);
+
+                conn.Open();
+                string sql = "SELECT * FROM Taksitler WHERE cari_id = @cari_id";
+
+                using (SQLiteCommand cmd = new SQLiteCommand(sql, conn))
+                {
+                    cmd.Parameters.AddWithValue("@cari_id", cariId);
+
+                    using (SQLiteDataReader reader = cmd.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            TaksitBilgileri.Add(new List<string>
+                            {
+                                reader["id"].ToString(),
+                                reader["cari_id"].ToString(),
+                                reader["toplam_tutar"].ToString(),
+                                reader["ilk_odeme"].ToString(),
+                                reader["kalan_tutar"].ToString(),
+                                reader["taksit_sayisi"].ToString(),
+                                reader["vade_tipi"].ToString()
+                            });
+                        }
+                    }
+                }
+            }
+            if (TaksitBilgileri.Count > 0)
+                return TaksitBilgileri;
+            return null;
+        }
+
+        public List<string> GetTaksit(long taksitId)
+        {
+            List<string> TaksitBilgileri = null;
+            using (SQLiteConnection conn = new SQLiteConnection(connectionString))
+            {
+                conn.Open();
+                string sql = "SELECT * FROM Taksitler WHERE id = @id";
+                using (SQLiteCommand cmd = new SQLiteCommand(sql, conn))
+                {
+                    cmd.Parameters.AddWithValue("@id", taksitId);
+
+                    using (SQLiteDataReader reader = cmd.ExecuteReader())
+                    {
+                        if (reader.Read())
+                        {
+                            TaksitBilgileri = new List<string>
+                            {
+                                reader["id"].ToString(),
+                                reader["cari_id"].ToString(),
+                                reader["toplam_tutar"].ToString(),
+                                reader["ilk_odeme"].ToString(),
+                                reader["kalan_tutar"].ToString(),
+                                reader["taksit_sayisi"].ToString(),
+                                reader["vade_tipi"].ToString()
+                            };
+                        }
+                    }
+                }
+            }
+            return TaksitBilgileri;
+        }
+
+        public List<List<string>> LoadTaksitler()
+        {
+            List<List<string>> TaksitBilgileri = new List<List<string>>();
+            using (SQLiteConnection conn = new SQLiteConnection(connectionString))
+            {
+                conn.Open();
+                string sql = "SELECT * FROM Taksitler";
+
+                using (SQLiteCommand cmd = new SQLiteCommand(sql, conn))
+                {
+                    using (SQLiteDataReader reader = cmd.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            TaksitBilgileri.Add(new List<string>
+                            {
+                                reader["id"].ToString(),
+                                reader["cari_id"].ToString(),
+                                reader["toplam_tutar"].ToString(),
+                                reader["ilk_odeme"].ToString(),
+                                reader["kalan_tutar"].ToString(),
+                                reader["taksit_sayisi"].ToString(),
+                                reader["vade_tipi"].ToString()
+                            });
+                        }
+                    }
+                }
+            }
+            if (TaksitBilgileri.Count > 0)
+                return TaksitBilgileri;
+            return null;
+        }
+
+        public bool DeleteTaksit(long taksitId)
+        {
+            using (SQLiteConnection conn = new SQLiteConnection(connectionString))
+            {
+                conn.Open();
+                string sql = $"DELETE FROM Taksitler WHERE id = @taksit_id";
+
+                using (SQLiteCommand cmd = new SQLiteCommand(sql, conn))
+                {
+                    cmd.Parameters.AddWithValue("@taksit_id", taksitId);
                     int rowsAffected = cmd.ExecuteNonQuery();
 
                     if (rowsAffected == 0)

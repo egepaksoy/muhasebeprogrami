@@ -29,6 +29,8 @@
         private void InitializeComponent()
         {
             panel3 = new Panel();
+            textBoxVadeMiktari = new TextBox();
+            labelVadeMiktari = new Label();
             label6 = new Label();
             textBoxUrunFiyati = new TextBox();
             label8 = new Label();
@@ -56,6 +58,8 @@
             // panel3
             // 
             panel3.BackColor = Color.FromArgb(44, 62, 80);
+            panel3.Controls.Add(textBoxVadeMiktari);
+            panel3.Controls.Add(labelVadeMiktari);
             panel3.Controls.Add(label6);
             panel3.Controls.Add(textBoxUrunFiyati);
             panel3.Controls.Add(label8);
@@ -80,6 +84,27 @@
             panel3.Name = "panel3";
             panel3.Size = new Size(573, 583);
             panel3.TabIndex = 2;
+            // 
+            // textBoxVadeMiktari
+            // 
+            textBoxVadeMiktari.Font = new Font("Segoe UI", 15F);
+            textBoxVadeMiktari.Location = new Point(322, 302);
+            textBoxVadeMiktari.Name = "textBoxVadeMiktari";
+            textBoxVadeMiktari.Size = new Size(178, 34);
+            textBoxVadeMiktari.TabIndex = 26;
+            textBoxVadeMiktari.Visible = false;
+            // 
+            // labelVadeMiktari
+            // 
+            labelVadeMiktari.AutoSize = true;
+            labelVadeMiktari.Font = new Font("Segoe UI", 12F);
+            labelVadeMiktari.ForeColor = Color.White;
+            labelVadeMiktari.Location = new Point(322, 278);
+            labelVadeMiktari.Name = "labelVadeMiktari";
+            labelVadeMiktari.Size = new Size(71, 21);
+            labelVadeMiktari.TabIndex = 25;
+            labelVadeMiktari.Text = "Vade ayı:";
+            labelVadeMiktari.Visible = false;
             // 
             // label6
             // 
@@ -126,7 +151,7 @@
             labelOdenen.AutoSize = true;
             labelOdenen.Font = new Font("Segoe UI", 12F);
             labelOdenen.ForeColor = Color.White;
-            labelOdenen.Location = new Point(322, 334);
+            labelOdenen.Location = new Point(322, 338);
             labelOdenen.Name = "labelOdenen";
             labelOdenen.Size = new Size(130, 21);
             labelOdenen.TabIndex = 19;
@@ -203,6 +228,7 @@
             // 
             // comboBoxUrun
             // 
+            comboBoxUrun.DropDownStyle = ComboBoxStyle.DropDownList;
             comboBoxUrun.Font = new Font("Segoe UI", 15F);
             comboBoxUrun.FormattingEnabled = true;
             comboBoxUrun.Location = new Point(55, 229);
@@ -225,6 +251,7 @@
             // 
             // comboBoxKasa
             // 
+            comboBoxKasa.DropDownStyle = ComboBoxStyle.DropDownList;
             comboBoxKasa.Font = new Font("Segoe UI", 12F);
             comboBoxKasa.FormattingEnabled = true;
             comboBoxKasa.Location = new Point(373, 435);
@@ -243,6 +270,7 @@
             dateTimePickerIlkOdeme.TabIndex = 8;
             dateTimePickerIlkOdeme.TabStop = false;
             dateTimePickerIlkOdeme.Visible = false;
+            dateTimePickerIlkOdeme.ValueChanged += dateTimePickerIlkOdeme_ValueChanged;
             // 
             // comboBoxTaksitDonemi
             // 
@@ -271,7 +299,7 @@
             // textBoxOdenenTutar
             // 
             textBoxOdenenTutar.Font = new Font("Segoe UI", 15F);
-            textBoxOdenenTutar.Location = new Point(322, 358);
+            textBoxOdenenTutar.Location = new Point(322, 362);
             textBoxOdenenTutar.Name = "textBoxOdenenTutar";
             textBoxOdenenTutar.Size = new Size(178, 34);
             textBoxOdenenTutar.TabIndex = 2;
@@ -350,5 +378,7 @@
         private TextBox textBoxAdet;
         private Label label6;
         private TextBox textBoxUrunFiyati;
+        private Label labelVadeMiktari;
+        private TextBox textBoxVadeMiktari;
     }
 }

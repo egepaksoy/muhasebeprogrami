@@ -29,6 +29,8 @@ namespace Muhasebe_Programı
         double UrunFiyati_Sayi;
         double ToplamFiyat = 0;
 
+        bool datePicked = false;
+
         SQLController sqlController = new SQLController();
 
         bool nakit = false;
@@ -53,6 +55,9 @@ namespace Muhasebe_Programı
             dateTimePickerIlkOdeme.Enabled = taksit;
             labelIlkOdemeTarihi.Visible = taksit;
             labelTaksitDonemi.Visible = taksit;
+            textBoxVadeMiktari.Visible = taksit;
+            textBoxVadeMiktari.Enabled = taksit;
+            labelVadeMiktari.Visible = taksit;
         }
 
         private void comboBoxOdemeTuru_SelectedIndexChanged(object sender, EventArgs e)
@@ -157,17 +162,28 @@ namespace Muhasebe_Programı
             }
         }
 
+        private void NakitSatis()
+        {
+
+        }
+
         private void btnSatis_Click(object sender, EventArgs e)
         {
             string cari = comboBoxCari.Text;
             string kasa = comboBoxKasa.Text;
             string urun = comboBoxUrun.Text;
             string adet = textBoxAdet.Text;
-            string fiyat = textBoxUrunFiyati.Text;
+            string fiyat = labelToplamFiyat.Text;
+            string onOdeme = textBoxOdenenTutar.Text;
+            string vadeMiktari = textBoxVadeMiktari.Text;
+            string vadeTipi = comboBoxTaksitDonemi.Text;
 
             int adet_sayi;
+            double onOdeme_sayi = 0;
+            int vadeMiktari_sayi = 0;
 
             List<string> urunBilgisi = sqlController.GetStok(urun);
+            List<string> kasaBilgisi = sqlController.GetKasa(kasa);
 
             if (!CheckAdetFiyat(adet, fiyat))
                 return;
@@ -185,7 +201,7 @@ namespace Muhasebe_Programı
 
             else
             {
-                int urunAdedi = Convert.ToInt32(urunBilgisi[3]);
+                int urunAdedi = Convert.ToInt32(urunBilgisi[2]);
 
                 if (urunAdedi - adet_sayi < 0)
                 {
@@ -195,7 +211,68 @@ namespace Muhasebe_Programı
                 }
             }
 
+            long cari_id = Convert.ToInt64(sqlController.GetCari(cari)[0]);
+            long urun_id = Convert.ToInt64(urunBilgisi[0]);
+            long kasa_id = Convert.ToInt64(kasaBilgisi[0]);
+            double fiyat_sayi = Convert.ToDouble(fiyat);
+            string odeme_turu = comboBoxOdemeTuru.Text.ToLower();
 
+            string Err = null;
+
+            if (odeme_turu == "taksit")
+            {
+                if (double.TryParse(onOdeme, out onOdeme_sayi) == false && string.IsNullOrEmpty(onOdeme) == false)
+                    Err = "Ön ödeme miktarı geçersiz";
+                if (datePicked == false)
+                    Err = "İlk taksit tarihi seçiniz";
+                if (int.TryParse(vadeMiktari, out vadeMiktari_sayi) == false && string.IsNullOrEmpty(vadeMiktari) == false)
+                    Err = "Vade miktarı geçersiz";
+                if (string.IsNullOrEmpty(vadeTipi))
+                    Err = "Taksit dönemi seçiniz";
+            }
+
+            if (Err != null)
+            {
+                MessageBox.Show(Err);
+                return;
+            }
+
+            Err = sqlController.NewSatis(cari_id, urun_id, kasa_id, adet_sayi, fiyat_sayi, odeme_turu);
+
+            if (Err != null)
+                MessageBox.Show(Err);
+            else
+            {
+                if (odeme_turu == "taksit")
+                {
+                    double kalan_tutar = fiyat_sayi - onOdeme_sayi;
+                    int taksit_sayisi = Convert.ToInt32(kalan_tutar / vadeMiktari_sayi) + (kalan_tutar % vadeMiktari_sayi == 0 ? 0 : 1);
+                    vadeTipi = (vadeTipi == "Aylık" ? "aylik" : "haftalik");
+
+                    string hata = sqlController.NewTaksit(cari_id, fiyat_sayi, dateTimePickerIlkOdeme, kalan_tutar, taksit_sayisi, vadeTipi);
+
+                    if (!string.IsNullOrEmpty(hata))
+                    {
+                        MessageBox.Show(hata);
+                        return;
+                    }
+
+                    fiyat_sayi = onOdeme_sayi;
+                }
+
+                int kalanUrun = Convert.ToInt32(urunBilgisi[2]) - adet_sayi;
+                sqlController.SatisStok(urun_id, kalanUrun);
+
+                double satisMiktari = fiyat_sayi + Convert.ToDouble(kasaBilgisi[2]);
+                sqlController.SatisKasa(kasa_id, satisMiktari);
+
+                MessageBox.Show("Satış yapıldı");
+            }
+        }
+
+        private void dateTimePickerIlkOdeme_ValueChanged(object sender, EventArgs e)
+        {
+            datePicked = true;
         }
     }
 }
