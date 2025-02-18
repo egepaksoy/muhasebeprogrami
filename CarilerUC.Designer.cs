@@ -64,7 +64,7 @@
             // 
             textBoxAdresi.BackColor = Color.FromArgb(203, 216, 228);
             textBoxAdresi.BorderStyle = BorderStyle.None;
-            textBoxAdresi.Font = new Font("Segoe UI", 18F);
+            textBoxAdresi.Font = new Font("Segoe UI", 12F);
             textBoxAdresi.Location = new Point(61, 382);
             textBoxAdresi.Multiline = true;
             textBoxAdresi.Name = "textBoxAdresi";

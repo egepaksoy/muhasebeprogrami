@@ -63,8 +63,6 @@ namespace Muhasebe_Programı
             if (Satislar == null)
                 return;
 
-            MessageBox.Show(Satislar.Count.ToString());
-
             for (int i = 0; i < Satislar.Count; i++)
             {
                 cariAdi = null;
