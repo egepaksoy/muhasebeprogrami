@@ -239,7 +239,7 @@ namespace Muhasebe_Programı
 
             Err = sqlController.NewSatis(cari_id, urun_id, kasa_id, adet_sayi, fiyat_sayi, odeme_turu);
 
-            if (Err != null)
+            if (long.TryParse(Err, out long satisId) == false)
                 MessageBox.Show(Err);
             else
             {
@@ -249,9 +249,9 @@ namespace Muhasebe_Programı
                     int taksit_sayisi = Convert.ToInt32(kalan_tutar / vadeMiktari_sayi) + (kalan_tutar % vadeMiktari_sayi == 0 ? 0 : 1);
                     vadeTipi = (vadeTipi == "Aylık" ? "aylik" : "haftalik");
 
-                    string hata = sqlController.NewTaksit(cari_id, fiyat_sayi, dateTimePickerIlkOdeme, kalan_tutar, taksit_sayisi, vadeTipi);
+                    string hata = sqlController.NewTaksit(satisId, cari_id, fiyat_sayi, dateTimePickerIlkOdeme, kalan_tutar, taksit_sayisi, vadeTipi);
 
-                    if (!string.IsNullOrEmpty(hata))
+                    if (long.TryParse(hata, out long l) == false)
                     {
                         MessageBox.Show(hata);
                         return;

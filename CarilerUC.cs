@@ -134,7 +134,7 @@ namespace Muhasebe_Programı
             {
                 string errMessage = sqlController.NewCari(cariAdi, cariTelefon, cariAdres);
 
-                if (errMessage != null)
+                if (long.TryParse(errMessage, out long l) == false)
                     MessageBox.Show(errMessage);
                 else
                     ClearForm();

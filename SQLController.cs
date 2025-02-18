@@ -23,6 +23,8 @@ namespace ProgramLibrary
 
         public string NewCari(string cariAdi, string cariTelefonu, string cariAdresi)
         {
+            long cariId;
+
             using (SQLiteConnection conn = new SQLiteConnection(connectionString))
             {
                 try
@@ -36,6 +38,9 @@ namespace ProgramLibrary
                         cmd.Parameters.AddWithValue("@telefon", cariTelefonu);
                         cmd.Parameters.AddWithValue("@adres", cariAdresi);
                         cmd.ExecuteNonQuery();
+
+                        cmd.CommandText = "SELECT last_insert_rowid();";
+                        cariId = (long)cmd.ExecuteScalar();
                     }
 
                     conn.Close();
@@ -46,7 +51,7 @@ namespace ProgramLibrary
                 }
 
             }
-            return null;
+            return cariId.ToString();
         }
 
         public string UpdateCari(long cariId, string cariAdi, string cariTelefonu, string cariAdresi)
@@ -182,6 +187,8 @@ namespace ProgramLibrary
 
         public string NewKasa(string kasaAdi, double bakiye)
         {
+            long kasaId;
+
             using (SQLiteConnection conn = new SQLiteConnection(connectionString))
             {
                 try
@@ -194,6 +201,9 @@ namespace ProgramLibrary
                         cmd.Parameters.AddWithValue("@kasa_adi", kasaAdi);
                         cmd.Parameters.AddWithValue("@bakiye", bakiye);
                         cmd.ExecuteNonQuery();
+
+                        cmd.CommandText = "SELECT last_insert_rowid();";
+                        kasaId = (long)cmd.ExecuteScalar();
                     }
 
                     conn.Close();
@@ -204,7 +214,7 @@ namespace ProgramLibrary
                 }
 
             }
-            return null;
+            return kasaId.ToString();
         }
 
         public string UpdateKasa(long KasaId, string KasaAdi, double KasaBakiye)
@@ -363,11 +373,12 @@ namespace ProgramLibrary
 
         public string NewStok(string urunAdi, int urunAdedi, double urunFiyati, string faturaNo, string urunAlisTipi)
         {
+            long urunId;
+
             using (SQLiteConnection conn = new SQLiteConnection(connectionString))
             {
                 try
                 {
-                    long urun_id;
                     conn.Open();
                     string stokSQL = "INSERT INTO Stok(urun_adi, adet, fiyat) VALUES (@urun_adi, @adet, @fiyat)";
 
@@ -379,14 +390,14 @@ namespace ProgramLibrary
                         cmd.ExecuteNonQuery();
 
                         cmd.CommandText = "SELECT last_insert_rowid();";
-                        urun_id = (long)cmd.ExecuteScalar();
+                        urunId = (long)cmd.ExecuteScalar();
                     }
 
                     string hareketSQL = "INSERT INTO Stok_Hareketleri(urun_id, hareket_tipi, miktar, fatura_no, tarih) VALUES (@urun_id, @hareket_tipi, @miktar, @fatura_no, @tarih)";
 
                     using (SQLiteCommand cmd = new SQLiteCommand(hareketSQL, conn))
                     {
-                        cmd.Parameters.AddWithValue("@urun_id", urun_id);
+                        cmd.Parameters.AddWithValue("@urun_id", urunId);
                         cmd.Parameters.AddWithValue("@hareket_tipi", urunAlisTipi);
                         cmd.Parameters.AddWithValue("@miktar", urunAdedi);
                         cmd.Parameters.AddWithValue("@fatura_no", faturaNo);
@@ -403,7 +414,7 @@ namespace ProgramLibrary
                 }
 
             }
-            return null;
+            return urunId.ToString();
         }
 
         public string UpdateStok(long urunId, string urunAdi, int urunAdedi, double urunFiyati, string faturaNo, string urunAlisTipi)
@@ -580,6 +591,8 @@ namespace ProgramLibrary
 
         public string NewSatis(long cariId, long urunId, long kasaId, int adet, double toplamTutar, string odemeTuru)
         {
+            long satisId;
+
             using (SQLiteConnection conn = new SQLiteConnection(connectionString))
             {
                 try
@@ -603,6 +616,9 @@ namespace ProgramLibrary
                         cmd.Parameters.AddWithValue("@toplam_tutar", toplamTutar);
                         cmd.Parameters.AddWithValue("@odeme_tipi", odemeTuru);
                         cmd.ExecuteNonQuery();
+
+                        cmd.CommandText = "SELECT last_insert_rowid();";
+                        satisId = (long)cmd.ExecuteScalar();
                     }
 
                     conn.Close();
@@ -613,7 +629,7 @@ namespace ProgramLibrary
                 }
 
             }
-            return null;
+            return satisId.ToString();
         }
 
         public List<string> GetSatis(long satisId)
@@ -682,17 +698,20 @@ namespace ProgramLibrary
             return null;
         }
 
-        public string NewTaksit(long cariId, double toplamTutar, DateTimePicker ilkOdemeTarihi, double kalanTutar, int taksitSayisi, string vadeTipi)
+        public string NewTaksit(long satisId, long cariId, double toplamTutar, DateTimePicker ilkOdemeTarihi, double kalanTutar, int taksitSayisi, string vadeTipi)
         {
+            long taksitId;
+
             using (SQLiteConnection conn = new SQLiteConnection(connectionString))
             {
                 try
                 {
                     conn.Open();
-                    string stokSQL = "INSERT INTO Taksitler(cari_id, toplam_tutar, ilk_odeme, kalan_tutar, taksit_sayisi, vade_tipi) VALUES (@cari_id, @toplam_tutar, @ilk_odeme, @kalan_tutar, @taksit_sayisi, @vade_tipi)";
+                    string stokSQL = "INSERT INTO Taksitler(satis_id, cari_id, toplam_tutar, ilk_odeme, kalan_tutar, taksit_sayisi, vade_tipi) VALUES (@satis_id, @cari_id, @toplam_tutar, @ilk_odeme, @kalan_tutar, @taksit_sayisi, @vade_tipi)";
 
                     using (SQLiteCommand cmd = new SQLiteCommand(stokSQL, conn))
                     {
+                        cmd.Parameters.AddWithValue("@satis_id", satisId);
                         cmd.Parameters.AddWithValue("@cari_id", cariId);
                         cmd.Parameters.AddWithValue("@toplam_tutar", toplamTutar);
                         cmd.Parameters.AddWithValue("@ilk_odeme", ilkOdemeTarihi.Value.ToString("yyyy-MM-dd HH:mm:ss"));
@@ -700,6 +719,9 @@ namespace ProgramLibrary
                         cmd.Parameters.AddWithValue("@taksit_sayisi", taksitSayisi);
                         cmd.Parameters.AddWithValue("@vade_tipi", vadeTipi);
                         cmd.ExecuteNonQuery();
+
+                        cmd.CommandText = "SELECT last_insert_rowid();";
+                        taksitId = (long)cmd.ExecuteScalar();
                     }
 
                     conn.Close();
@@ -710,7 +732,7 @@ namespace ProgramLibrary
                 }
 
             }
-            return null;
+            return taksitId.ToString();
         }
 
         public string UpdateTaksit(long taksitId, long cariId, double toplamTutar, DateTimePicker ilkOdemeTarihi, double kalanTutar, int taksitSayisi, string vadeTipi)

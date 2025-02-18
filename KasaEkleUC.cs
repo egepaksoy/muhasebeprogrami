@@ -81,7 +81,7 @@ namespace Muhasebe_Programı
                 if (CheckValuesValid(textBoxKasaAdi, textBoxBakiye))
                 {
                     string err = sqlController.NewKasa(textBoxKasaAdi.Text.ToLower(), Convert.ToDouble(textBoxBakiye.Text));
-                    if (!string.IsNullOrEmpty(err))
+                    if (long.TryParse(err, out long l) == false)
                         MessageBox.Show(err);
                     else
                         ReturnOrigin();

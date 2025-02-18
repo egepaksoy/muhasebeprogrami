@@ -10,4 +10,4 @@ stok geçmişi goruntuleme
 
 
 
-yeni cari goruntuleme ve duzenleme ekranı oluştur. bu ekranda carinin geçmiş işlemleri, taksitleri, cari adı duzeltme adres ekleme telefon vs. duzenleme olucak ayrıca cari silindiği zaman taksitler de silincek ama geçmiş işlemleri silinmicek
+taksitler tablosuna satis id'si ekle

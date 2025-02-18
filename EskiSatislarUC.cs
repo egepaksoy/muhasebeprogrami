@@ -31,6 +31,8 @@ namespace Muhasebe_Programı
         int baslangicY = 20;
         int satirlarArasiBosluk = 10;
 
+        EkScreen formSatisGoruntule = new EkScreen(new EskiSatisGoruntuleUC());
+
         public EskiSatislarUC()
         {
             InitializeComponent();
@@ -63,10 +65,12 @@ namespace Muhasebe_Programı
             if (Satislar == null)
                 return;
 
+            Satislar.Reverse();
+
             for (int i = 0; i < Satislar.Count; i++)
             {
-                cariAdi = null;
-                urunAdi = null;
+                cariAdi = "Silinmiş";
+                urunAdi = "Silinmiş";
                 tarih = null;
                 tutar = null;
 
@@ -109,7 +113,15 @@ namespace Muhasebe_Programı
 
         private void btnSatis_Click(object sender, EventArgs e)
         {
+            long satisID = Convert.ToInt64((sender as Button).Name.Split("btnSatis")[1]);
 
+            if (!formSatisGoruntule.Created)
+            {
+                formSatisGoruntule = new EkScreen(new EskiSatisGoruntuleUC(satisID));
+                formSatisGoruntule.ShowDialog();
+            }
+
+            RenderSatislar();
         }
 
         private void EskiSatislarUC_Load(object sender, EventArgs e)
