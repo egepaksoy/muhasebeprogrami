@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Muhasebe_Programı;
+using System;
 using System.Collections.Generic;
 using System.Data.SQLite;
 using static System.Data.Entity.Infrastructure.Design.Executor;
@@ -86,6 +87,35 @@ namespace ProgramLibrary
                 using (SQLiteCommand cmd = new SQLiteCommand(sql, conn))
                 {
                     cmd.Parameters.AddWithValue("@cari_adi", cariAdi);
+
+                    using (SQLiteDataReader reader = cmd.ExecuteReader())
+                    {
+                        if (reader.Read())
+                        {
+                            CariBilgileri = new List<string>
+                            {
+                                reader["id"].ToString(),
+                                reader["ad_soyad"].ToString(),
+                                reader["telefon"].ToString(),
+                                reader["adres"].ToString()
+                            };
+                        }
+                    }
+                }
+            }
+            return CariBilgileri;
+        }
+
+        public List<string> GetCari(long cariId)
+        {
+            List<string> CariBilgileri = null;
+            using (SQLiteConnection conn = new SQLiteConnection(connectionString))
+            {
+                conn.Open();
+                string sql = "SELECT * FROM Cariler WHERE id = @cari_id";
+                using (SQLiteCommand cmd = new SQLiteCommand(sql, conn))
+                {
+                    cmd.Parameters.AddWithValue("@cari_id", cariId);
 
                     using (SQLiteDataReader reader = cmd.ExecuteReader())
                     {
@@ -240,6 +270,34 @@ namespace ProgramLibrary
                 using (SQLiteCommand cmd = new SQLiteCommand(sql, conn))
                 {
                     cmd.Parameters.AddWithValue("@kasa_adi", kasaAdi);
+
+                    using (SQLiteDataReader reader = cmd.ExecuteReader())
+                    {
+                        if (reader.Read())
+                        {
+                            KasaBilgileri = new List<string>
+                            {
+                                reader["id"].ToString(),
+                                reader["kasa_adi"].ToString(),
+                                reader["bakiye"].ToString()
+                            };
+                        }
+                    }
+                }
+            }
+            return KasaBilgileri;
+        }
+
+        public List<string> GetKasa(long kasaId)
+        {
+            List<string> KasaBilgileri = null;
+            using (SQLiteConnection conn = new SQLiteConnection(connectionString))
+            {
+                conn.Open();
+                string sql = "SELECT * FROM Kasalar WHERE id = @kasa_id";
+                using (SQLiteCommand cmd = new SQLiteCommand(sql, conn))
+                {
+                    cmd.Parameters.AddWithValue("@kasa_id", kasaId);
 
                     using (SQLiteDataReader reader = cmd.ExecuteReader())
                     {
@@ -446,6 +504,35 @@ namespace ProgramLibrary
             return StokBilgileri;
         }
 
+        public List<string> GetStok(long urunId)
+        {
+            List<string> StokBilgileri = null;
+            using (SQLiteConnection conn = new SQLiteConnection(connectionString))
+            {
+                conn.Open();
+                string sql = "SELECT * FROM Stok WHERE id = @urun_id";
+                using (SQLiteCommand cmd = new SQLiteCommand(sql, conn))
+                {
+                    cmd.Parameters.AddWithValue("@urun_id", urunId);
+
+                    using (SQLiteDataReader reader = cmd.ExecuteReader())
+                    {
+                        if (reader.Read())
+                        {
+                            StokBilgileri = new List<string>
+                            {
+                                reader["id"].ToString(),
+                                reader["urun_adi"].ToString(),
+                                reader["adet"].ToString(),
+                                reader["fiyat"].ToString()
+                            };
+                        }
+                    }
+                }
+            }
+            return StokBilgileri;
+        }
+
         public List<string> LoadStoklar()
         {
             List<String> StokElemanlari = new List<String>();
@@ -526,6 +613,72 @@ namespace ProgramLibrary
                 }
 
             }
+            return null;
+        }
+
+        public List<string> GetSatis(long satisId)
+        {
+            List<string> Satis = null;
+            using (SQLiteConnection conn = new SQLiteConnection(connectionString))
+            {
+                conn.Open();
+                string sql = "SELECT * FROM Satislar WHERE id = @satis_id";
+                using (SQLiteCommand cmd = new SQLiteCommand(sql, conn))
+                {
+                    cmd.Parameters.AddWithValue("@satis_id", satisId);
+
+                    using (SQLiteDataReader reader = cmd.ExecuteReader())
+                    {
+                        if (reader.Read())
+                        {
+                            Satis = new List<string>
+                            {
+                                reader["id"].ToString(),
+                                reader["cari_id"].ToString(),
+                                reader["urun_id"].ToString(),
+                                reader["kasa_id"].ToString(),
+                                reader["adet"].ToString(),
+                                reader["toplam_tutar"].ToString(),
+                                reader["tarih"].ToString(),
+                                reader["odeme_tipi"].ToString()
+                            };
+                        }
+                    }
+                }
+            }
+            return Satis;
+        }
+
+        public List<List<string>> LoadSatislar()
+        {
+            List<List<string>> Satislar = new List<List<string>>();
+            using (SQLiteConnection conn = new SQLiteConnection(connectionString))
+            {
+                conn.Open();
+                string sql = "SELECT * FROM Satislar";
+                using (SQLiteCommand cmd = new SQLiteCommand(sql, conn))
+                {
+                    using (SQLiteDataReader reader = cmd.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            Satislar.Add(new List<string>
+                            {
+                                reader["id"].ToString(),
+                                reader["cari_id"].ToString(),
+                                reader["urun_id"].ToString(),
+                                reader["kasa_id"].ToString(),
+                                reader["adet"].ToString(),
+                                reader["toplam_tutar"].ToString(),
+                                reader["tarih"].ToString(),
+                                reader["odeme_tipi"].ToString()
+                            });
+                        }
+                    }
+                }
+            }
+            if (Satislar.Count > 0)
+                return Satislar;
             return null;
         }
 
