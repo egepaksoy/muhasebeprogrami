@@ -38,16 +38,8 @@
             label2 = new Label();
             label1 = new Label();
             panelTaksitler = new Panel();
-            button4 = new Button();
-            button3 = new Button();
-            button2 = new Button();
             label6 = new Label();
             panelSatislar = new Panel();
-            button1 = new Button();
-            button5 = new Button();
-            button6 = new Button();
-            panelTaksitler.SuspendLayout();
-            panelSatislar.SuspendLayout();
             SuspendLayout();
             // 
             // label5
@@ -143,63 +135,13 @@
             // 
             // panelTaksitler
             // 
+            panelTaksitler.AutoScroll = true;
             panelTaksitler.BackColor = Color.FromArgb(217, 217, 217);
-            panelTaksitler.Controls.Add(button4);
-            panelTaksitler.Controls.Add(button3);
-            panelTaksitler.Controls.Add(button2);
             panelTaksitler.Location = new Point(573, 75);
             panelTaksitler.Margin = new Padding(0);
             panelTaksitler.Name = "panelTaksitler";
             panelTaksitler.Size = new Size(360, 243);
             panelTaksitler.TabIndex = 23;
-            // 
-            // button4
-            // 
-            button4.BackColor = Color.FromArgb(44, 62, 80);
-            button4.FlatStyle = FlatStyle.Popup;
-            button4.Font = new Font("Segoe UI", 12F);
-            button4.ForeColor = Color.White;
-            button4.Location = new Point(25, 113);
-            button4.Margin = new Padding(0);
-            button4.Name = "button4";
-            button4.Padding = new Padding(10, 0, 0, 0);
-            button4.Size = new Size(310, 33);
-            button4.TabIndex = 2;
-            button4.Text = "button4";
-            button4.TextAlign = ContentAlignment.MiddleLeft;
-            button4.UseVisualStyleBackColor = false;
-            // 
-            // button3
-            // 
-            button3.BackColor = Color.FromArgb(44, 62, 80);
-            button3.FlatStyle = FlatStyle.Popup;
-            button3.Font = new Font("Segoe UI", 12F);
-            button3.ForeColor = Color.White;
-            button3.Location = new Point(25, 70);
-            button3.Margin = new Padding(0);
-            button3.Name = "button3";
-            button3.Padding = new Padding(10, 0, 0, 0);
-            button3.Size = new Size(310, 33);
-            button3.TabIndex = 1;
-            button3.Text = "button3";
-            button3.TextAlign = ContentAlignment.MiddleLeft;
-            button3.UseVisualStyleBackColor = false;
-            // 
-            // button2
-            // 
-            button2.BackColor = Color.FromArgb(44, 62, 80);
-            button2.FlatStyle = FlatStyle.Popup;
-            button2.Font = new Font("Segoe UI", 12F);
-            button2.ForeColor = Color.White;
-            button2.Location = new Point(25, 27);
-            button2.Margin = new Padding(0);
-            button2.Name = "button2";
-            button2.Padding = new Padding(10, 0, 0, 0);
-            button2.Size = new Size(310, 33);
-            button2.TabIndex = 0;
-            button2.Text = "button2";
-            button2.TextAlign = ContentAlignment.MiddleLeft;
-            button2.UseVisualStyleBackColor = false;
             // 
             // label6
             // 
@@ -215,63 +157,13 @@
             // 
             // panelSatislar
             // 
+            panelSatislar.AutoScroll = true;
             panelSatislar.BackColor = Color.FromArgb(217, 217, 217);
-            panelSatislar.Controls.Add(button1);
-            panelSatislar.Controls.Add(button5);
-            panelSatislar.Controls.Add(button6);
             panelSatislar.Location = new Point(573, 403);
             panelSatislar.Margin = new Padding(0);
             panelSatislar.Name = "panelSatislar";
             panelSatislar.Size = new Size(360, 228);
             panelSatislar.TabIndex = 24;
-            // 
-            // button1
-            // 
-            button1.BackColor = Color.FromArgb(44, 62, 80);
-            button1.FlatStyle = FlatStyle.Popup;
-            button1.Font = new Font("Segoe UI", 12F);
-            button1.ForeColor = Color.White;
-            button1.Location = new Point(25, 113);
-            button1.Margin = new Padding(0);
-            button1.Name = "button1";
-            button1.Padding = new Padding(10, 0, 0, 0);
-            button1.Size = new Size(310, 33);
-            button1.TabIndex = 2;
-            button1.Text = "button1";
-            button1.TextAlign = ContentAlignment.MiddleLeft;
-            button1.UseVisualStyleBackColor = false;
-            // 
-            // button5
-            // 
-            button5.BackColor = Color.FromArgb(44, 62, 80);
-            button5.FlatStyle = FlatStyle.Popup;
-            button5.Font = new Font("Segoe UI", 12F);
-            button5.ForeColor = Color.White;
-            button5.Location = new Point(25, 70);
-            button5.Margin = new Padding(0);
-            button5.Name = "button5";
-            button5.Padding = new Padding(10, 0, 0, 0);
-            button5.Size = new Size(310, 33);
-            button5.TabIndex = 1;
-            button5.Text = "button5";
-            button5.TextAlign = ContentAlignment.MiddleLeft;
-            button5.UseVisualStyleBackColor = false;
-            // 
-            // button6
-            // 
-            button6.BackColor = Color.FromArgb(44, 62, 80);
-            button6.FlatStyle = FlatStyle.Popup;
-            button6.Font = new Font("Segoe UI", 12F);
-            button6.ForeColor = Color.White;
-            button6.Location = new Point(25, 27);
-            button6.Margin = new Padding(0);
-            button6.Name = "button6";
-            button6.Padding = new Padding(10, 0, 0, 0);
-            button6.Size = new Size(310, 33);
-            button6.TabIndex = 0;
-            button6.Text = "button6";
-            button6.TextAlign = ContentAlignment.MiddleLeft;
-            button6.UseVisualStyleBackColor = false;
             // 
             // CariDuzenleUC
             // 
@@ -293,8 +185,6 @@
             Name = "CariDuzenleUC";
             Size = new Size(995, 681);
             Load += CariDuzenleUC_Load;
-            panelTaksitler.ResumeLayout(false);
-            panelSatislar.ResumeLayout(false);
             ResumeLayout(false);
             PerformLayout();
         }
@@ -311,13 +201,7 @@
         private Label label2;
         private Label label1;
         private Panel panelTaksitler;
-        private Button button4;
-        private Button button3;
-        private Button button2;
         private Label label6;
         private Panel panelSatislar;
-        private Button button1;
-        private Button button5;
-        private Button button6;
     }
 }

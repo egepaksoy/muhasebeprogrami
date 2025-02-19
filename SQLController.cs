@@ -665,6 +665,42 @@ namespace ProgramLibrary
             return Satis;
         }
 
+        public List<List<string>> GetCariSatislari(long cariId)
+        {
+            List<List<string>> Satislar = new List<List<string>>();
+            using (SQLiteConnection conn = new SQLiteConnection(connectionString))
+            {
+                conn.Open();
+                string sql = "SELECT * FROM Satislar WHERE cari_id = @cari_id";
+                using (SQLiteCommand cmd = new SQLiteCommand(sql, conn))
+                {
+                    cmd.Parameters.AddWithValue("@cari_id", cariId);
+
+                    using (SQLiteDataReader reader = cmd.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            Satislar.Add(new List<string>
+                            {
+                                reader["id"].ToString(),
+                                reader["cari_id"].ToString(),
+                                reader["urun_id"].ToString(),
+                                reader["kasa_id"].ToString(),
+                                reader["adet"].ToString(),
+                                reader["toplam_tutar"].ToString(),
+                                reader["tarih"].ToString(),
+                                reader["odeme_tipi"].ToString()
+                            });
+                        }
+                    }
+                }
+            }
+
+            if (Satislar.Count > 0)
+                return Satislar;
+            return null;
+        }
+
         public List<List<string>> LoadSatislar()
         {
             List<List<string>> Satislar = new List<List<string>>();
@@ -698,7 +734,7 @@ namespace ProgramLibrary
             return null;
         }
 
-        public string NewTaksit(long satisId, long cariId, double toplamTutar, DateTimePicker ilkOdemeTarihi, double kalanTutar, int taksitSayisi, string vadeTipi)
+        public string NewTaksit(long satisId, long cariId, double toplamTutar, DateTimePicker ilkOdemeTarihi, double kalanTutar, int taksitSayisi, double aylikOdemeMiktari, string vadeTipi)
         {
             long taksitId;
 
@@ -707,7 +743,7 @@ namespace ProgramLibrary
                 try
                 {
                     conn.Open();
-                    string stokSQL = "INSERT INTO Taksitler(satis_id, cari_id, toplam_tutar, ilk_odeme, kalan_tutar, taksit_sayisi, vade_tipi) VALUES (@satis_id, @cari_id, @toplam_tutar, @ilk_odeme, @kalan_tutar, @taksit_sayisi, @vade_tipi)";
+                    string stokSQL = "INSERT INTO Taksitler(satis_id, cari_id, toplam_tutar, ilk_odeme, kalan_tutar, taksit_sayisi, aylik_odeme_miktari, vade_tipi) VALUES (@satis_id, @cari_id, @toplam_tutar, @ilk_odeme, @kalan_tutar, @taksit_sayisi, @aylik_odeme_miktari, @vade_tipi)";
 
                     using (SQLiteCommand cmd = new SQLiteCommand(stokSQL, conn))
                     {
@@ -717,6 +753,7 @@ namespace ProgramLibrary
                         cmd.Parameters.AddWithValue("@ilk_odeme", ilkOdemeTarihi.Value.ToString("yyyy-MM-dd HH:mm:ss"));
                         cmd.Parameters.AddWithValue("@kalan_tutar", kalanTutar);
                         cmd.Parameters.AddWithValue("@taksit_sayisi", taksitSayisi);
+                        cmd.Parameters.AddWithValue("@aylik_odeme_miktari", aylikOdemeMiktari);
                         cmd.Parameters.AddWithValue("@vade_tipi", vadeTipi);
                         cmd.ExecuteNonQuery();
 
@@ -733,37 +770,6 @@ namespace ProgramLibrary
 
             }
             return taksitId.ToString();
-        }
-
-        public string UpdateTaksit(long taksitId, long cariId, double toplamTutar, DateTimePicker ilkOdemeTarihi, double kalanTutar, int taksitSayisi, string vadeTipi)
-        {
-            using (SQLiteConnection conn = new SQLiteConnection(connectionString))
-            {
-                try
-                {
-                    conn.Open();
-                    string stokSQL = "UPDATE Taksitler SET cari_id=@cari_id, toplam_tutar=@toplam_tutar, ilk_odeme=@ilk_odeme, kalan_tutar=@kalan_tutar, taksit_sayisi=@taksit_sayisi, vade_tipi=@vade_tipi WHERE id=@taksit_id";
-
-                    using (SQLiteCommand cmd = new SQLiteCommand(stokSQL, conn))
-                    {
-                        cmd.Parameters.AddWithValue("@id", taksitId);
-                        cmd.Parameters.AddWithValue("@cari_id", cariId);
-                        cmd.Parameters.AddWithValue("@toplam_tutar", toplamTutar);
-                        cmd.Parameters.AddWithValue("@ilk_odeme", ilkOdemeTarihi.Value.ToString("yyyy-MM-dd HH:mm:ss"));
-                        cmd.Parameters.AddWithValue("@kalan_tutar", kalanTutar);
-                        cmd.Parameters.AddWithValue("@taksit_sayisi", taksitSayisi);
-                        cmd.Parameters.AddWithValue("@vade_tipi", vadeTipi);
-                        cmd.ExecuteNonQuery();
-                    }
-                    conn.Close();
-                }
-                catch (Exception ex)
-                {
-                    return ex.Message;
-                }
-
-            }
-            return null;
         }
 
         public List<List<string>> GetTaksit(string cariAdi)
@@ -787,12 +793,15 @@ namespace ProgramLibrary
                             TaksitBilgileri.Add(new List<string>
                             {
                                 reader["id"].ToString(),
+                                reader["satis_id"].ToString(),
                                 reader["cari_id"].ToString(),
                                 reader["toplam_tutar"].ToString(),
                                 reader["ilk_odeme"].ToString(),
                                 reader["kalan_tutar"].ToString(),
                                 reader["taksit_sayisi"].ToString(),
-                                reader["vade_tipi"].ToString()
+                                reader["aylik_odeme_miktari"].ToString(),
+                                reader["vade_tipi"].ToString(),
+                                reader["aktif"].ToString()
                             });
                         }
                     }
@@ -821,12 +830,15 @@ namespace ProgramLibrary
                             TaksitBilgileri = new List<string>
                             {
                                 reader["id"].ToString(),
+                                reader["satis_id"].ToString(),
                                 reader["cari_id"].ToString(),
                                 reader["toplam_tutar"].ToString(),
                                 reader["ilk_odeme"].ToString(),
                                 reader["kalan_tutar"].ToString(),
                                 reader["taksit_sayisi"].ToString(),
-                                reader["vade_tipi"].ToString()
+                                reader["aylik_odeme_miktari"].ToString(),
+                                reader["vade_tipi"].ToString(),
+                                reader["aktif"].ToString()
                             };
                         }
                     }
@@ -835,16 +847,55 @@ namespace ProgramLibrary
             return TaksitBilgileri;
         }
 
-        public List<List<string>> LoadTaksitler()
+        public List<List<string>> GetCariTaksitleri(long cariId)
+        {
+            List<List<string>> TaksitlerBilgileri = new List<List<string>>();
+            using (SQLiteConnection conn = new SQLiteConnection(connectionString))
+            {
+                conn.Open();
+                string sql = "SELECT * FROM Taksitler WHERE cari_id = @cari_id";
+                using (SQLiteCommand cmd = new SQLiteCommand(sql, conn))
+                {
+                    cmd.Parameters.AddWithValue("@cari_id", cariId);
+
+                    using (SQLiteDataReader reader = cmd.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            TaksitlerBilgileri.Add(new List<string>
+                            {
+                                reader["id"].ToString(),
+                                reader["satis_id"].ToString(),
+                                reader["cari_id"].ToString(),
+                                reader["toplam_tutar"].ToString(),
+                                reader["ilk_odeme"].ToString(),
+                                reader["kalan_tutar"].ToString(),
+                                reader["taksit_sayisi"].ToString(),
+                                reader["aylik_odeme_miktari"].ToString(),
+                                reader["vade_tipi"].ToString(),
+                                reader["aktif"].ToString()
+                            });
+                        }
+                    }
+                }
+            }
+            if (TaksitlerBilgileri.Count > 0)
+                return TaksitlerBilgileri;
+            return null;
+        }
+
+        public List<List<string>> LoadTaksitler(bool aktif)
         {
             List<List<string>> TaksitBilgileri = new List<List<string>>();
             using (SQLiteConnection conn = new SQLiteConnection(connectionString))
             {
                 conn.Open();
-                string sql = "SELECT * FROM Taksitler";
+                string sql = "SELECT * FROM Taksitler WHERE aktif=@aktif";
 
                 using (SQLiteCommand cmd = new SQLiteCommand(sql, conn))
                 {
+                    cmd.Parameters.AddWithValue("@aktif", aktif);
+
                     using (SQLiteDataReader reader = cmd.ExecuteReader())
                     {
                         while (reader.Read())
@@ -852,12 +903,15 @@ namespace ProgramLibrary
                             TaksitBilgileri.Add(new List<string>
                             {
                                 reader["id"].ToString(),
+                                reader["satis_id"].ToString(),
                                 reader["cari_id"].ToString(),
                                 reader["toplam_tutar"].ToString(),
                                 reader["ilk_odeme"].ToString(),
                                 reader["kalan_tutar"].ToString(),
                                 reader["taksit_sayisi"].ToString(),
-                                reader["vade_tipi"].ToString()
+                                reader["aylik_odeme_miktari"].ToString(),
+                                reader["vade_tipi"].ToString(),
+                                reader["aktif"].ToString()
                             });
                         }
                     }

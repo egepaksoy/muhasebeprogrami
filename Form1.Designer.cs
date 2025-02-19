@@ -30,6 +30,7 @@
         {
             btnCariler = new Button();
             panel1 = new Panel();
+            btnEskiTaksitler = new Button();
             btnEskiSatislar = new Button();
             btnSatis = new Button();
             btnTaksitler = new Button();
@@ -42,7 +43,7 @@
             // btnCariler
             // 
             btnCariler.Font = new Font("Segoe UI", 18F);
-            btnCariler.Location = new Point(35, 315);
+            btnCariler.Location = new Point(35, 381);
             btnCariler.Name = "btnCariler";
             btnCariler.Size = new Size(200, 45);
             btnCariler.TabIndex = 0;
@@ -54,6 +55,7 @@
             // panel1
             // 
             panel1.BackColor = Color.FromArgb(44, 62, 80);
+            panel1.Controls.Add(btnEskiTaksitler);
             panel1.Controls.Add(btnEskiSatislar);
             panel1.Controls.Add(btnSatis);
             panel1.Controls.Add(btnTaksitler);
@@ -66,10 +68,22 @@
             panel1.Size = new Size(270, 681);
             panel1.TabIndex = 4;
             // 
+            // btnEskiTaksitler
+            // 
+            btnEskiTaksitler.Font = new Font("Segoe UI", 18F);
+            btnEskiTaksitler.Location = new Point(35, 315);
+            btnEskiTaksitler.Name = "btnEskiTaksitler";
+            btnEskiTaksitler.Size = new Size(200, 45);
+            btnEskiTaksitler.TabIndex = 8;
+            btnEskiTaksitler.TabStop = false;
+            btnEskiTaksitler.Text = "Eski Taksitler";
+            btnEskiTaksitler.UseVisualStyleBackColor = true;
+            btnEskiTaksitler.Click += ChangePanel;
+            // 
             // btnEskiSatislar
             // 
             btnEskiSatislar.Font = new Font("Segoe UI", 18F);
-            btnEskiSatislar.Location = new Point(35, 381);
+            btnEskiSatislar.Location = new Point(35, 447);
             btnEskiSatislar.Name = "btnEskiSatislar";
             btnEskiSatislar.Size = new Size(200, 45);
             btnEskiSatislar.TabIndex = 7;
@@ -98,7 +112,7 @@
             btnTaksitler.Size = new Size(200, 45);
             btnTaksitler.TabIndex = 5;
             btnTaksitler.TabStop = false;
-            btnTaksitler.Text = "Taksitler";
+            btnTaksitler.Text = "Aktif Taksitler";
             btnTaksitler.UseVisualStyleBackColor = true;
             btnTaksitler.Click += ChangePanel;
             // 
@@ -160,5 +174,6 @@
         private Button btnTaksitler;
         private Button btnSatis;
         private Button btnEskiSatislar;
+        private Button btnEskiTaksitler;
     }
 }

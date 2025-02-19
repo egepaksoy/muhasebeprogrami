@@ -15,8 +15,8 @@ namespace Muhasebe_Programı
 
         private void MainScreen_Load(object sender, EventArgs e)
         {
-            SideBarButtons = [btnCariler, btnKasa, btnSatis, btnStok, btnTaksitler, btnEskiSatislar];
-            UserControls = [new KasaUC(), new CarilerUC(), new StokUC(), new SatisUC(), new TaksitlerUC(), new EskiSatislarUC()];
+            SideBarButtons = [btnCariler, btnKasa, btnSatis, btnStok, btnTaksitler, btnEskiTaksitler, btnEskiSatislar];
+            UserControls = [new KasaUC(), new CarilerUC(), new StokUC(), new SatisUC(), new TaksitlerUC(), new EskiTaksitlerUC(), new EskiSatislarUC()];
 
             designEditor = new DesignEditor(mainPanel, SideBarButtons, UserControls);
 

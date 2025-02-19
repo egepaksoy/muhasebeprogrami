@@ -81,12 +81,15 @@ CREATE TABLE IF NOT EXISTS Satislar (
 cursor.execute("""
 CREATE TABLE IF NOT EXISTS Taksitler (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
+    satis_id INTEGER NOT NULL,
     cari_id INTEGER NOT NULL,
     toplam_tutar INTEGER NOT NULL,
     ilk_odeme TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     kalan_tutar INTEGER NOT NULL,
     taksit_sayisi INTEGER NOT NULL,
-    vade_tipi TEXT CHECK(vade_tipi IN ('aylik', 'haftalik'))
+	aylik_odeme_miktari FLOAT NOT NULL,
+    vade_tipi TEXT CHECK(vade_tipi IN ('aylik', 'haftalik')),
+	aktif BOOLEAN DEFAULT TRUE
 )
 """)
 

@@ -274,6 +274,7 @@
             // 
             // comboBoxTaksitDonemi
             // 
+            comboBoxTaksitDonemi.DropDownStyle = ComboBoxStyle.DropDownList;
             comboBoxTaksitDonemi.Enabled = false;
             comboBoxTaksitDonemi.Font = new Font("Segoe UI", 12F);
             comboBoxTaksitDonemi.FormattingEnabled = true;

@@ -58,6 +58,8 @@ namespace Muhasebe_Programı
             textBoxVadeMiktari.Visible = taksit;
             textBoxVadeMiktari.Enabled = taksit;
             labelVadeMiktari.Visible = taksit;
+
+            comboBoxTaksitDonemi.SelectedIndex = 0;
         }
 
         private void comboBoxOdemeTuru_SelectedIndexChanged(object sender, EventArgs e)
@@ -162,11 +164,6 @@ namespace Muhasebe_Programı
             }
         }
 
-        private void NakitSatis()
-        {
-
-        }
-
         private void btnSatis_Click(object sender, EventArgs e)
         {
             string cari = comboBoxCari.Text;
@@ -175,12 +172,12 @@ namespace Muhasebe_Programı
             string adet = textBoxAdet.Text;
             string fiyat = labelToplamFiyat.Text;
             string onOdeme = textBoxOdenenTutar.Text;
-            string vadeMiktari = textBoxVadeMiktari.Text;
+            string vadeAyi = textBoxVadeMiktari.Text;
             string vadeTipi = comboBoxTaksitDonemi.Text;
 
             int adet_sayi;
             double onOdeme_sayi = 0;
-            int vadeMiktari_sayi = 0;
+            int vadeAyi_sayi = 0;
 
             List<string> urunBilgisi = sqlController.GetStok(urun);
             List<string> kasaBilgisi = sqlController.GetKasa(kasa);
@@ -225,7 +222,7 @@ namespace Muhasebe_Programı
                     Err = "Ön ödeme miktarı geçersiz";
                 if (datePicked == false)
                     Err = "İlk taksit tarihi seçiniz";
-                if (int.TryParse(vadeMiktari, out vadeMiktari_sayi) == false && string.IsNullOrEmpty(vadeMiktari) == false)
+                if (int.TryParse(vadeAyi, out vadeAyi_sayi) == false && string.IsNullOrEmpty(vadeAyi) == false)
                     Err = "Vade miktarı geçersiz";
                 if (string.IsNullOrEmpty(vadeTipi))
                     Err = "Taksit dönemi seçiniz";
@@ -246,10 +243,11 @@ namespace Muhasebe_Programı
                 if (odeme_turu == "taksit")
                 {
                     double kalan_tutar = fiyat_sayi - onOdeme_sayi;
-                    int taksit_sayisi = Convert.ToInt32(kalan_tutar / vadeMiktari_sayi) + (kalan_tutar % vadeMiktari_sayi == 0 ? 0 : 1);
+                    double aylikOdemeMiktari = Convert.ToDouble(kalan_tutar / vadeAyi_sayi);
+
                     vadeTipi = (vadeTipi == "Aylık" ? "aylik" : "haftalik");
 
-                    string hata = sqlController.NewTaksit(satisId, cari_id, fiyat_sayi, dateTimePickerIlkOdeme, kalan_tutar, taksit_sayisi, vadeTipi);
+                    string hata = sqlController.NewTaksit(satisId, cari_id, fiyat_sayi, dateTimePickerIlkOdeme, kalan_tutar, vadeAyi_sayi, aylikOdemeMiktari, vadeTipi);
 
                     if (long.TryParse(hata, out long l) == false)
                     {
