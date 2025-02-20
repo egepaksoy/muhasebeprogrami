@@ -41,7 +41,7 @@
             labelOdemeTipi = new Label();
             labelKasaAdi = new Label();
             labelAdet = new Label();
-            button1 = new Button();
+            btnTaksitler = new Button();
             SuspendLayout();
             // 
             // label1
@@ -187,22 +187,22 @@
             labelAdet.TabIndex = 12;
             labelAdet.Text = "12";
             // 
-            // button1
+            // btnTaksitler
             // 
-            button1.Font = new Font("Segoe UI", 15F);
-            button1.Location = new Point(172, 414);
-            button1.Name = "button1";
-            button1.Size = new Size(195, 56);
-            button1.TabIndex = 13;
-            button1.Text = "Taksitler";
-            button1.UseVisualStyleBackColor = true;
-            button1.Click += button1_Click;
+            btnTaksitler.Font = new Font("Segoe UI", 15F);
+            btnTaksitler.Location = new Point(172, 414);
+            btnTaksitler.Name = "btnTaksitler";
+            btnTaksitler.Size = new Size(195, 56);
+            btnTaksitler.TabIndex = 13;
+            btnTaksitler.Text = "Taksitler";
+            btnTaksitler.UseVisualStyleBackColor = true;
+            btnTaksitler.Click += button1_Click;
             // 
             // EskiSatisGoruntuleUC
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            Controls.Add(button1);
+            Controls.Add(btnTaksitler);
             Controls.Add(labelAdet);
             Controls.Add(labelKasaAdi);
             Controls.Add(labelOdemeTipi);
@@ -238,6 +238,6 @@
         private Label labelOdemeTipi;
         private Label labelKasaAdi;
         private Label labelAdet;
-        private Button button1;
+        private Button btnTaksitler;
     }
 }

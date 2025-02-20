@@ -13,6 +13,7 @@ namespace Muhasebe_Programı
 {
     public partial class TaksitlerUC : UserControl
     {
+        List<List<string>> TumTaksitler = new List<List<string>>();
         List<List<string>> AktifTaksitler = new List<List<string>>();
         List<List<string>> GelecekTaksitler = new List<List<string>>();
 
@@ -39,6 +40,47 @@ namespace Muhasebe_Programı
         public TaksitlerUC()
         {
             InitializeComponent();
+        }
+
+        private List<List<string>> GetAktifler(bool aktif, List<List<string>> TumTaksitler)
+        {
+            List<List<string>> Taksitler = new List<List<string>>();
+
+            DateTime todayDate = DateTime.Today;
+            DateTime taksitDate;
+
+            int eklemeGunu = 30;
+
+            if (TumTaksitler != null)
+            {
+                foreach (var Taksit in TumTaksitler)
+                {
+                    if (aktif)
+                    {
+                        taksitDate = Convert.ToDateTime(Taksit[4]);
+                        eklemeGunu = Taksit[8] == "aylik" ? 30 : 7;
+
+                        while (taksitDate <= todayDate)
+                            taksitDate.AddDays(eklemeGunu);
+                        if (taksitDate == todayDate)
+                            Taksitler.Add(Taksit);
+                    }
+                    else
+                    {
+                        taksitDate = Convert.ToDateTime(Taksit[4]);
+                        eklemeGunu = Taksit[8] == "aylik" ? 30 : 7;
+
+                        while (taksitDate <= todayDate)
+                            taksitDate.AddDays(eklemeGunu);
+                        if (taksitDate != todayDate)
+                            Taksitler.Add(Taksit);
+                    }
+                }
+            }
+
+            if (Taksitler.Count > 0)
+                return Taksitler;
+            return null;
         }
 
         private void RemoveButtons()
@@ -73,71 +115,82 @@ namespace Muhasebe_Programı
             if (GelecekTaksitButonlari != null)
                 GelecekTaksitButonlari.Clear();
 
-            AktifTaksitler = sqlController.LoadTaksitler(aktif: true);
-            GelecekTaksitler = sqlController.LoadTaksitler(aktif: false);
+            TumTaksitler = sqlController.LoadTaksitler(aktif: true);
+            AktifTaksitler = GetAktifler(true, TumTaksitler);
+            GelecekTaksitler = GetAktifler(false, TumTaksitler);
 
-            if (AktifTaksitler == null)
-                return;
-            for (int i = 0; i < AktifTaksitler.Count; i++)
+            if (AktifTaksitler != null)
             {
-                cariAdi = "Silinmiş";
+                for (int i = 0; i < AktifTaksitler.Count; i++)
+                {
+                    cariAdi = "Silinmiş";
 
-                List<string> cariBilgiler = sqlController.GetCari(Convert.ToInt64(AktifTaksitler[i][2]));
+                    List<string> cariBilgiler = sqlController.GetCari(Convert.ToInt64(AktifTaksitler[i][2]));
 
-                if (cariBilgiler != null)
-                    cariAdi = cariBilgiler[1];
+                    if (cariBilgiler != null)
+                        cariAdi = cariBilgiler[1];
 
-                Button btn = new Button();
-                btn.Name = $"btnSatis{AktifTaksitler[i][0]}";
-                btn.Text = cariAdi;
-                btn.Size = new Size(butonGenislik, butonYukseklik);
-                btn.Font = new Font("Segoe UI", 12, FontStyle.Regular);
-                btn.Click += (s, e) => btnTaksit_Click(s, e);
+                    Button btn = new Button();
+                    btn.Name = $"btnSatis{AktifTaksitler[i][0]}";
+                    btn.Text = cariAdi;
+                    btn.Size = new Size(butonGenislik, butonYukseklik);
+                    btn.Font = new Font("Segoe UI", 12, FontStyle.Regular);
+                    btn.Click += (s, e) => btnTaksit_Click(s, e);
 
-                int x = baslangicX;
-                int y = baslangicY + (i * (satirlarArasiBosluk + butonYukseklik));
-                btn.Location = new Point(x, y);
+                    int x = baslangicX;
+                    int y = baslangicY + (i * (satirlarArasiBosluk + butonYukseklik));
+                    btn.Location = new Point(x, y);
 
-                AktifTaksitButonlari.Add(btn);
-                panelAktifTaksitler.Controls.Add(btn);
+                    AktifTaksitButonlari.Add(btn);
+                    panelAktifTaksitler.Controls.Add(btn);
+                }
+
+                if (AktifTaksitButonlari != null)
+                    designEditor.BtnEditor(AktifTaksitButonlari, foreColor, backColor, mouseOverColor, mouseDownColor);
             }
-
-            if (AktifTaksitButonlari != null)
-                designEditor.BtnEditor(AktifTaksitButonlari, foreColor, backColor, mouseOverColor, mouseDownColor);
-
-            if (GelecekTaksitler == null)
-                return;
-            for (int i = 0; i < GelecekTaksitler.Count; i++)
+            
+            if (GelecekTaksitler != null)
             {
-                cariAdi = "Silinmiş";
+                for (int i = 0; i < GelecekTaksitler.Count; i++)
+                {
+                    cariAdi = "Silinmiş";
 
-                List<string> cariBilgiler = sqlController.GetCari(Convert.ToInt64(GelecekTaksitler[i][2]));
+                    List<string> cariBilgiler = sqlController.GetCari(Convert.ToInt64(GelecekTaksitler[i][2]));
 
-                if (cariBilgiler != null)
-                    cariAdi = cariBilgiler[1];
+                    if (cariBilgiler != null)
+                        cariAdi = cariBilgiler[1];
 
-                Button btn = new Button();
-                btn.Name = $"btnSatis{GelecekTaksitler[i][0]}";
-                btn.Text = cariAdi;
-                btn.Size = new Size(butonGenislik, butonYukseklik);
-                btn.Font = new Font("Segoe UI", 12, FontStyle.Regular);
-                btn.Click += (s, e) => btnTaksit_Click(s, e);
+                    Button btn = new Button();
+                    btn.Name = $"btnSatis{GelecekTaksitler[i][0]}";
+                    btn.Text = cariAdi;
+                    btn.Size = new Size(butonGenislik, butonYukseklik);
+                    btn.Font = new Font("Segoe UI", 12, FontStyle.Regular);
+                    btn.Click += (s, e) => btnTaksit_Click(s, e);
 
-                int x = baslangicX;
-                int y = baslangicY + (i * (satirlarArasiBosluk + butonYukseklik));
-                btn.Location = new Point(x, y);
+                    int x = baslangicX;
+                    int y = baslangicY + (i * (satirlarArasiBosluk + butonYukseklik));
+                    btn.Location = new Point(x, y);
 
-                GelecekTaksitButonlari.Add(btn);
-                panelGelecekTaksitler.Controls.Add(btn);
+                    GelecekTaksitButonlari.Add(btn);
+                    panelGelecekTaksitler.Controls.Add(btn);
+                }
+
+                if (GelecekTaksitButonlari != null)
+                    designEditor.BtnEditor(GelecekTaksitButonlari, foreColor, backColor, mouseOverColor, mouseDownColor);
             }
-
-            if (GelecekTaksitButonlari != null)
-                designEditor.BtnEditor(GelecekTaksitButonlari, foreColor, backColor, mouseOverColor, mouseDownColor);
         }
 
         private void btnTaksit_Click(object sender, EventArgs e)
         {
+            long taksitId = Convert.ToInt64((sender as Button).Name.Split("btnSatis")[1]);
 
+            if (!formTaksitGoruntuleme.Created)
+            {
+                formTaksitGoruntuleme = new EkScreen(new TaksitGoruntuleUC(taksitId));
+                formTaksitGoruntuleme.ShowDialog();
+            }
+
+            RenderTaksitler();
         }
 
         private void TaksitlerUC_Load(object sender, EventArgs e)

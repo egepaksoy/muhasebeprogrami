@@ -25,7 +25,7 @@ namespace Muhasebe_Programı
         Color mouseOverColor = Color.FromArgb(0x4E, 0x5D, 0x6B);
         Color mouseDownColor = Color.FromArgb(44, 62, 80);
 
-        int butonGenislik = 860;
+        int butonGenislik = 843;
         int butonYukseklik = 50;
         int baslangicX = 20;
         int baslangicY = 20;

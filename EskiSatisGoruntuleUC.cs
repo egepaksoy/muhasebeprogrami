@@ -51,10 +51,12 @@ namespace Muhasebe_Programı
             string tarih;
             string odemeTuru;
             string satisAdedi;
+            bool taksitli;
 
             urun = sqlController.GetStok(Convert.ToInt64(Satis[2]));
             cari = sqlController.GetCari(Convert.ToInt64(Satis[1]));
             kasa = sqlController.GetKasa(Convert.ToInt64(Satis[3]));
+            taksitli = Satis[7] == "taksit";
 
             if (urun == null)
                 urunAdi = "Silinmiş Ürün";
@@ -83,6 +85,14 @@ namespace Muhasebe_Programı
             labelTarih.Text = tarih;
             labelOdemeTipi.Text = odemeTuru;
             labelAdet.Text = satisAdedi;
+
+            TaksitButonuKontrolu(taksitli);
+        }
+
+        private void TaksitButonuKontrolu(bool taksit)
+        {
+            btnTaksitler.Visible = taksit;
+            btnTaksitler.Enabled = taksit;
         }
 
         private void EskiSatisGoruntuleUC_Load(object sender, EventArgs e)
