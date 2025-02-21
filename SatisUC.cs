@@ -6,6 +6,7 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Threading.Tasks.Dataflow;
 using System.Windows.Forms;
 using ProgramLibrary;
 
@@ -213,6 +214,7 @@ namespace Muhasebe_Programı
             long kasa_id = Convert.ToInt64(kasaBilgisi[0]);
             double fiyat_sayi = Convert.ToDouble(fiyat);
             string odeme_turu = comboBoxOdemeTuru.Text.ToLower();
+            string odemeTarihleri = null;
 
             string Err = null;
 
@@ -247,15 +249,15 @@ namespace Muhasebe_Programı
 
                     vadeTipi = (vadeTipi == "Aylık" ? "aylik" : "haftalik");
 
-                    string hata = sqlController.NewTaksit(satisId, cari_id, fiyat_sayi, dateTimePickerIlkOdeme, kalan_tutar, vadeAyi_sayi, aylikOdemeMiktari, vadeTipi);
+                    odemeTarihleri = OdemeTarihleri(vadeTipi, vadeAyi_sayi, Convert.ToDateTime(dateTimePickerIlkOdeme.Value));
+
+                    string hata = sqlController.NewTaksit(satisId, cari_id, fiyat_sayi, odemeTarihleri, kalan_tutar, vadeAyi_sayi, aylikOdemeMiktari, vadeTipi);
 
                     if (long.TryParse(hata, out long l) == false)
                     {
                         MessageBox.Show(hata);
                         return;
                     }
-
-                    fiyat_sayi = onOdeme_sayi;
                 }
 
                 int kalanUrun = Convert.ToInt32(urunBilgisi[2]) - adet_sayi;
@@ -266,6 +268,29 @@ namespace Muhasebe_Programı
 
                 MessageBox.Show("Satış yapıldı");
             }
+        }
+
+        private string OdemeTarihleri(string vadeTipi, int vadeAyi, DateTime ilkOdemeTarihi)
+        {
+            int eklemeGunu = 30;
+            int ay = vadeAyi;
+            DateTime tarih = ilkOdemeTarihi;
+
+            string tarihler = "";
+
+            if (vadeTipi == "aylik")
+                eklemeGunu = 30;
+            else if (vadeTipi == "haftalik")
+                eklemeGunu = 7;
+
+            while (vadeAyi > 0)
+            {   
+                tarihler += $"{tarih.Date.ToString().Split()[0]},";
+                tarih = tarih.AddDays(eklemeGunu);
+                vadeAyi--;
+            }
+
+            return tarihler;
         }
 
         private void dateTimePickerIlkOdeme_ValueChanged(object sender, EventArgs e)

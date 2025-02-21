@@ -37,50 +37,105 @@ namespace Muhasebe_Programı
 
         EkScreen formTaksitGoruntuleme = new EkScreen(new EskiSatisGoruntuleUC());
 
+        Point labelAktifTaksitler_Konum = new Point(72, 35);
+        Point panelAktifTaksitler_Konum = new Point(72, 80);
+
+        Point labelGelecekTaksitler_Konum = new Point(72, 341);
+        Point panelGelecekTaksitler_Konum = new Point(72, 386);
+
+        Size panelOriginSize = new Size(850, 240);
+        Size panelWideSize = new Size(850, 546);
+
         public TaksitlerUC()
         {
             InitializeComponent();
         }
 
-        private List<List<string>> GetAktifler(bool aktif, List<List<string>> TumTaksitler)
+        private void ParseTaksitler(List<List<string>> TumTaksitler)
         {
             List<List<string>> Taksitler = new List<List<string>>();
 
             DateTime todayDate = DateTime.Today;
-            DateTime taksitDate;
 
-            int eklemeGunu = 30;
+            int AktifTaksitler_len = 0;
 
             if (TumTaksitler != null)
             {
                 foreach (var Taksit in TumTaksitler)
                 {
-                    if (aktif)
-                    {
-                        taksitDate = Convert.ToDateTime(Taksit[4]);
-                        eklemeGunu = Taksit[8] == "aylik" ? 30 : 7;
+                    List<string> Tarihler = Taksit[4].Split(",").ToList();
 
-                        while (taksitDate <= todayDate)
-                            taksitDate.AddDays(eklemeGunu);
-                        if (taksitDate == todayDate)
-                            Taksitler.Add(Taksit);
-                    }
-                    else
-                    {
-                        taksitDate = Convert.ToDateTime(Taksit[4]);
-                        eklemeGunu = Taksit[8] == "aylik" ? 30 : 7;
+                    AktifTaksitler_len = AktifTaksitler.Count;
 
-                        while (taksitDate <= todayDate)
-                            taksitDate.AddDays(eklemeGunu);
-                        if (taksitDate != todayDate)
-                            Taksitler.Add(Taksit);
+                    foreach (var Tarih in Tarihler)
+                    {
+                        if (Tarih == todayDate.ToString().Split()[0])
+                        {
+                            AktifTaksitler.Add(Taksit);
+                            break;
+                        }
                     }
+
+                    if (AktifTaksitler_len == AktifTaksitler.Count)
+                        GelecekTaksitler.Add(Taksit);
                 }
             }
+        }
 
-            if (Taksitler.Count > 0)
-                return Taksitler;
-            return null;
+        private void ShowPanels()
+        {
+            bool showGelecekTaksitler = false;
+            bool showAktifTaksitler = false;
+
+            labelAktifTaksitler.Visible = true;
+            labelAktifTaksitler.Location = labelAktifTaksitler_Konum;
+
+            labelGelecekTaksitler.Visible = true;
+            labelGelecekTaksitler.Location = labelGelecekTaksitler_Konum;
+            
+            panelAktifTaksitler.Visible = true;
+            panelAktifTaksitler.Enabled = true;
+            panelAktifTaksitler.Location = panelAktifTaksitler_Konum;
+            panelAktifTaksitler.Size = panelOriginSize;
+
+            panelGelecekTaksitler.Visible = true;
+            panelGelecekTaksitler.Enabled = true;
+            panelGelecekTaksitler.Location = panelGelecekTaksitler_Konum;
+            panelGelecekTaksitler.Size = panelOriginSize;
+
+            if (GelecekTaksitler != null)
+            {
+                if (GelecekTaksitler.Count > 0)
+                    showGelecekTaksitler = true;
+            }
+
+            if (AktifTaksitler != null)
+            {
+                if (AktifTaksitler.Count > 0)
+                    showAktifTaksitler = true;
+            }
+
+            if (showAktifTaksitler && showGelecekTaksitler)
+                return;
+
+            if (showAktifTaksitler && showGelecekTaksitler == false)
+            {
+                labelGelecekTaksitler.Visible = false;
+                panelGelecekTaksitler.Enabled = false;
+                panelGelecekTaksitler.Visible = false;
+
+                panelAktifTaksitler.Size = panelWideSize;
+            }
+            else if (showGelecekTaksitler && showAktifTaksitler == false)
+            {
+                labelAktifTaksitler.Visible = false;
+                panelAktifTaksitler.Enabled = false;
+                panelAktifTaksitler.Visible = false;
+
+                panelGelecekTaksitler.Size = panelWideSize;
+                panelGelecekTaksitler.Location = panelAktifTaksitler_Konum;
+                labelGelecekTaksitler.Location = labelAktifTaksitler_Konum;
+            }
         }
 
         private void RemoveButtons()
@@ -116,8 +171,8 @@ namespace Muhasebe_Programı
                 GelecekTaksitButonlari.Clear();
 
             TumTaksitler = sqlController.LoadTaksitler(aktif: true);
-            AktifTaksitler = GetAktifler(true, TumTaksitler);
-            GelecekTaksitler = GetAktifler(false, TumTaksitler);
+            ParseTaksitler(TumTaksitler);
+            ShowPanels();
 
             if (AktifTaksitler != null)
             {

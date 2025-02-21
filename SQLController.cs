@@ -734,7 +734,7 @@ namespace ProgramLibrary
             return null;
         }
 
-        public string NewTaksit(long satisId, long cariId, double toplamTutar, DateTimePicker ilkOdemeTarihi, double kalanTutar, int taksitSayisi, double aylikOdemeMiktari, string vadeTipi)
+        public string NewTaksit(long satisId, long cariId, double toplamTutar, string odemeTarihleri, double kalanTutar, int taksitSayisi, double aylikOdemeMiktari, string vadeTipi)
         {
             long taksitId;
 
@@ -743,14 +743,14 @@ namespace ProgramLibrary
                 try
                 {
                     conn.Open();
-                    string stokSQL = "INSERT INTO Taksitler(satis_id, cari_id, toplam_tutar, ilk_odeme, kalan_tutar, taksit_sayisi, aylik_odeme_miktari, vade_tipi) VALUES (@satis_id, @cari_id, @toplam_tutar, @ilk_odeme, @kalan_tutar, @taksit_sayisi, @aylik_odeme_miktari, @vade_tipi)";
+                    string stokSQL = "INSERT INTO Taksitler(satis_id, cari_id, toplam_tutar, odeme_tarihleri, kalan_tutar, taksit_sayisi, aylik_odeme_miktari, vade_tipi) VALUES (@satis_id, @cari_id, @toplam_tutar, @odeme_tarihleri, @kalan_tutar, @taksit_sayisi, @aylik_odeme_miktari, @vade_tipi)";
 
                     using (SQLiteCommand cmd = new SQLiteCommand(stokSQL, conn))
                     {
                         cmd.Parameters.AddWithValue("@satis_id", satisId);
                         cmd.Parameters.AddWithValue("@cari_id", cariId);
                         cmd.Parameters.AddWithValue("@toplam_tutar", toplamTutar);
-                        cmd.Parameters.AddWithValue("@ilk_odeme", ilkOdemeTarihi.Value.ToString("yyyy-MM-dd HH:mm:ss"));
+                        cmd.Parameters.AddWithValue("@odeme_tarihleri", odemeTarihleri);
                         cmd.Parameters.AddWithValue("@kalan_tutar", kalanTutar);
                         cmd.Parameters.AddWithValue("@taksit_sayisi", taksitSayisi);
                         cmd.Parameters.AddWithValue("@aylik_odeme_miktari", aylikOdemeMiktari);
@@ -796,7 +796,7 @@ namespace ProgramLibrary
                                 reader["satis_id"].ToString(),
                                 reader["cari_id"].ToString(),
                                 reader["toplam_tutar"].ToString(),
-                                reader["ilk_odeme"].ToString(),
+                                reader["odeme_tarihleri"].ToString(),
                                 reader["kalan_tutar"].ToString(),
                                 reader["taksit_sayisi"].ToString(),
                                 reader["aylik_odeme_miktari"].ToString(),
@@ -833,7 +833,7 @@ namespace ProgramLibrary
                                 reader["satis_id"].ToString(),
                                 reader["cari_id"].ToString(),
                                 reader["toplam_tutar"].ToString(),
-                                reader["ilk_odeme"].ToString(),
+                                reader["odeme_tarihleri"].ToString(),
                                 reader["kalan_tutar"].ToString(),
                                 reader["taksit_sayisi"].ToString(),
                                 reader["aylik_odeme_miktari"].ToString(),
@@ -868,7 +868,7 @@ namespace ProgramLibrary
                                 reader["satis_id"].ToString(),
                                 reader["cari_id"].ToString(),
                                 reader["toplam_tutar"].ToString(),
-                                reader["ilk_odeme"].ToString(),
+                                reader["odeme_tarihleri"].ToString(),
                                 reader["kalan_tutar"].ToString(),
                                 reader["taksit_sayisi"].ToString(),
                                 reader["aylik_odeme_miktari"].ToString(),
@@ -906,7 +906,7 @@ namespace ProgramLibrary
                                 reader["satis_id"].ToString(),
                                 reader["cari_id"].ToString(),
                                 reader["toplam_tutar"].ToString(),
-                                reader["ilk_odeme"].ToString(),
+                                reader["odeme_tarihleri"].ToString(),
                                 reader["kalan_tutar"].ToString(),
                                 reader["taksit_sayisi"].ToString(),
                                 reader["aylik_odeme_miktari"].ToString(),
