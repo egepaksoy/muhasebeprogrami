@@ -28,17 +28,46 @@
         /// </summary>
         private void InitializeComponent()
         {
+            panelTaksitler = new Panel();
+            labelEskiTaksitler = new Label();
             SuspendLayout();
+            // 
+            // panelTaksitler
+            // 
+            panelTaksitler.AutoScroll = true;
+            panelTaksitler.BackColor = Color.FromArgb(217, 217, 217);
+            panelTaksitler.Location = new Point(72, 80);
+            panelTaksitler.Margin = new Padding(0);
+            panelTaksitler.Name = "panelTaksitler";
+            panelTaksitler.Size = new Size(850, 546);
+            panelTaksitler.TabIndex = 13;
+            // 
+            // labelEskiTaksitler
+            // 
+            labelEskiTaksitler.AutoSize = true;
+            labelEskiTaksitler.Font = new Font("Segoe UI Semibold", 24F, FontStyle.Bold, GraphicsUnit.Point, 162);
+            labelEskiTaksitler.Location = new Point(72, 35);
+            labelEskiTaksitler.Name = "labelEskiTaksitler";
+            labelEskiTaksitler.Size = new Size(205, 45);
+            labelEskiTaksitler.TabIndex = 12;
+            labelEskiTaksitler.Text = "Eski Taksitler";
             // 
             // EskiTaksitlerUC
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
+            Controls.Add(labelEskiTaksitler);
+            Controls.Add(panelTaksitler);
             Name = "EskiTaksitlerUC";
             Size = new Size(995, 681);
+            Load += EskiTaksitlerUC_Load;
             ResumeLayout(false);
+            PerformLayout();
         }
 
         #endregion
+
+        private Panel panelTaksitler;
+        private Label labelEskiTaksitler;
     }
 }

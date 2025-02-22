@@ -797,6 +797,7 @@ namespace ProgramLibrary
                                 reader["cari_id"].ToString(),
                                 reader["toplam_tutar"].ToString(),
                                 reader["odeme_tarihleri"].ToString(),
+                                reader["odenen_tutarlar"].ToString(),
                                 reader["kalan_tutar"].ToString(),
                                 reader["taksit_sayisi"].ToString(),
                                 reader["aylik_odeme_miktari"].ToString(),
@@ -834,6 +835,7 @@ namespace ProgramLibrary
                                 reader["cari_id"].ToString(),
                                 reader["toplam_tutar"].ToString(),
                                 reader["odeme_tarihleri"].ToString(),
+                                reader["odenen_tutarlar"].ToString(),
                                 reader["kalan_tutar"].ToString(),
                                 reader["taksit_sayisi"].ToString(),
                                 reader["aylik_odeme_miktari"].ToString(),
@@ -869,6 +871,7 @@ namespace ProgramLibrary
                                 reader["cari_id"].ToString(),
                                 reader["toplam_tutar"].ToString(),
                                 reader["odeme_tarihleri"].ToString(),
+                                reader["odenen_tutarlar"].ToString(),
                                 reader["kalan_tutar"].ToString(),
                                 reader["taksit_sayisi"].ToString(),
                                 reader["aylik_odeme_miktari"].ToString(),
@@ -907,6 +910,7 @@ namespace ProgramLibrary
                                 reader["cari_id"].ToString(),
                                 reader["toplam_tutar"].ToString(),
                                 reader["odeme_tarihleri"].ToString(),
+                                reader["odenen_tutarlar"].ToString(),
                                 reader["kalan_tutar"].ToString(),
                                 reader["taksit_sayisi"].ToString(),
                                 reader["aylik_odeme_miktari"].ToString(),
@@ -919,6 +923,40 @@ namespace ProgramLibrary
             }
             if (TaksitBilgileri.Count > 0)
                 return TaksitBilgileri;
+            return null;
+        }
+
+        public string TaksitOde(long taksitId, double odemeMiktari, DateTime odemeTarihi)
+        {
+            using (SQLiteConnection conn = new SQLiteConnection(connectionString))
+            {
+                try
+                {
+                    conn.Open();
+
+                    List<string> taksit = this.GetTaksit(taksitId);
+
+                    string odenenTutarlar = taksit[5] + $"{odemeMiktari}/";
+                    double kalanTutar = Convert.ToDouble(taksit[6]) - odemeMiktari;
+
+                    string stokSQL = "UPDATE Taksitler SET odenen_tutarlar=@odenen_tutarlar, kalan_tutar=@kalan_tutar WHERE id=@taksit_id";
+
+                    using (SQLiteCommand cmd = new SQLiteCommand(stokSQL, conn))
+                    {
+                        cmd.Parameters.AddWithValue("@taksit_id", taksitId);
+                        cmd.Parameters.AddWithValue("@odenen_tutarlar", odenenTutarlar);
+                        cmd.Parameters.AddWithValue("@kalan_tutar", kalanTutar);
+                        cmd.ExecuteNonQuery();
+                    }
+
+                    conn.Close();
+                }
+                catch (Exception ex)
+                {
+                    return ex.Message;
+                }
+
+            }
             return null;
         }
 
