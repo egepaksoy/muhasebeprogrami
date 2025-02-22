@@ -106,6 +106,7 @@
             btnOdendi.TabIndex = 6;
             btnOdendi.Text = "Ödeme Yapıldı";
             btnOdendi.UseVisualStyleBackColor = true;
+            btnOdendi.Click += btnOdendi_Click;
             // 
             // TaksitGoruntuleUC
             // 

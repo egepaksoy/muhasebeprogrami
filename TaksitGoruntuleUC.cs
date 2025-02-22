@@ -34,7 +34,7 @@ namespace Muhasebe_Programı
             List<string> ListedOdemeler = Odemeler.Split("/").ToList();
             List<string> result = new List<string>();
 
-            foreach(var Odeme in ListedOdemeler)
+            foreach (var Odeme in ListedOdemeler)
             {
                 if (!string.IsNullOrEmpty(Odeme))
                     result.Add(Odeme);
@@ -99,6 +99,11 @@ namespace Muhasebe_Programı
         private void TaksitGoruntuleUC_Load(object sender, EventArgs e)
         {
             RenderTaksit();
+        }
+
+        private void btnOdendi_Click(object sender, EventArgs e)
+        {
+            sqlController.TaksitOde(taksitId);
         }
     }
 }

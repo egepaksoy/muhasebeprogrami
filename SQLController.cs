@@ -926,7 +926,7 @@ namespace ProgramLibrary
             return null;
         }
 
-        public string TaksitOde(long taksitId, double odemeMiktari, DateTime odemeTarihi)
+        public string TaksitOde(long taksitId)
         {
             using (SQLiteConnection conn = new SQLiteConnection(connectionString))
             {
@@ -936,16 +936,26 @@ namespace ProgramLibrary
 
                     List<string> taksit = this.GetTaksit(taksitId);
 
+                    double odemeMiktari = Convert.ToDouble(taksit[8]);
                     string odenenTutarlar = taksit[5] + $"{odemeMiktari}/";
                     double kalanTutar = Convert.ToDouble(taksit[6]) - odemeMiktari;
 
-                    string stokSQL = "UPDATE Taksitler SET odenen_tutarlar=@odenen_tutarlar, kalan_tutar=@kalan_tutar WHERE id=@taksit_id";
+                    bool aktif = true;
+
+                    if (kalanTutar <= 1)
+                    {
+                        kalanTutar = 0;
+                        aktif = false;
+                    }
+
+                    string stokSQL = "UPDATE Taksitler SET odenen_tutarlar=@odenen_tutarlar, kalan_tutar=@kalan_tutar, aktif=@aktif WHERE id=@taksit_id";
 
                     using (SQLiteCommand cmd = new SQLiteCommand(stokSQL, conn))
                     {
                         cmd.Parameters.AddWithValue("@taksit_id", taksitId);
                         cmd.Parameters.AddWithValue("@odenen_tutarlar", odenenTutarlar);
                         cmd.Parameters.AddWithValue("@kalan_tutar", kalanTutar);
+                        cmd.Parameters.AddWithValue("@aktif", aktif);
                         cmd.ExecuteNonQuery();
                     }
 
