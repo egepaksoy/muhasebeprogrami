@@ -29,6 +29,11 @@ namespace Muhasebe_Programı
             this.taksitId = taksitId;
         }
 
+        public TaksitGoruntuleUC()
+        {
+            InitializeComponent();
+        }
+
         private List<string> ParseOdemeler(string Odemeler)
         {
             List<string> ListedOdemeler = Odemeler.Split("/").ToList();
@@ -94,6 +99,8 @@ namespace Muhasebe_Programı
             labelToplamTutar.Text = ToplamTutar;
             labelKalanTaksitTutar.Text = KalanTaksitKalanTutar;
             labelSonrakiOdemeTarihi.Text = SonrakiOdemeTarihi;
+
+            EkraniAyarla(TaksitBilgileri);
         }
 
         private void TaksitGoruntuleUC_Load(object sender, EventArgs e)
@@ -103,7 +110,48 @@ namespace Muhasebe_Programı
 
         private void btnOdendi_Click(object sender, EventArgs e)
         {
-            sqlController.TaksitOde(taksitId);
+            string Err = sqlController.TaksitOde(taksitId);
+
+            if (!string.IsNullOrEmpty(Err))
+                MessageBox.Show(Err);
+            else
+                CloseScreen();
+
+        }
+
+        private void EkraniAyarla(List<string> taksit)
+        {
+            if (taksit[10] == "False")
+            {
+                btnOdendi.Enabled = false;
+                btnOdendi.Visible = false;
+
+                labelKalanTaksitTutar.Text = $"{taksit[7]} / {Convert.ToDouble(taksit[8]):F2}";
+                labelSonrakiOdemeTarihi.Text = "";
+
+                List<string> odenenTarihler = taksit[4].Split(",").ToList();
+                List<string> odenenTutarlar = taksit[5].Split("/").ToList();
+
+                int i = 0;
+                while (i < odenenTarihler.Count)
+                {
+                    if (!string.IsNullOrEmpty(odenenTarihler[i]))
+                        labelSonrakiOdemeTarihi.Text += $"{odenenTarihler[i]} - {Convert.ToDouble(odenenTutarlar[i]):F2}\n";
+                    i++;
+                }
+            }
+        }
+
+        private void CloseScreen()
+        {
+            foreach (Form form in Application.OpenForms)
+            {
+                if (form.Name == "EkScreen" && form.Controls.Contains(labelCariAdi))
+                {
+                    form.Close();
+                    break;
+                }
+            }
         }
     }
 }

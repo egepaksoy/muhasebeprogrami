@@ -112,6 +112,7 @@
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
+            AutoScroll = true;
             Controls.Add(btnOdendi);
             Controls.Add(labelSonrakiOdemeTarihi);
             Controls.Add(labelKalanTaksitTutar);

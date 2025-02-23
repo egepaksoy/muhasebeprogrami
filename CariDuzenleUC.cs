@@ -38,6 +38,7 @@ namespace Muhasebe_Programı
 
         Size EkScreenSize = new Size(995, 720);
         EkScreen formSatisGoruntule = new EkScreen(new EskiSatisGoruntuleUC());
+        EkScreen formTaksitGoruntuleme = new EkScreen(new TaksitGoruntuleUC());
 
         public CariDuzenleUC(string cari_adi)
         {
@@ -106,7 +107,7 @@ namespace Muhasebe_Programı
             {
                 Button btn = new Button();
                 btn.Name = $"btnTaksit{Taksitler[i][0]}";
-                btn.Text = Taksitler[i][4].Split()[0];
+                btn.Text = Taksitler[i][3];
                 btn.Size = new Size(butonGenislik, butonYukseklik);
                 btn.Font = new Font("Segoe UI", 12, FontStyle.Regular);
                 btn.Click += (s, e) => btnTaksit_Click(s, e);
@@ -137,7 +138,15 @@ namespace Muhasebe_Programı
 
         private void btnTaksit_Click(object sender, EventArgs e)
         {
-            long taksitId = Convert.ToInt64((sender as Button).Text.Split("btnTaksit")[1]);
+            long taksitId = Convert.ToInt64((sender as Button).Name.Split("btnTaksit")[1]);
+
+            if (!formTaksitGoruntuleme.Created)
+            {
+                formTaksitGoruntuleme = new EkScreen(new TaksitGoruntuleUC(taksitId));
+                formTaksitGoruntuleme.ShowDialog();
+            }
+
+            RenderButtons();
         }
 
         private void CariDuzenleUC_Load(object sender, EventArgs e)

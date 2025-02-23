@@ -51,6 +51,20 @@ namespace Muhasebe_Programı
             InitializeComponent();
         }
 
+        private List<string> ParseOdemeler(string Odemeler)
+        {
+            List<string> ListedOdemeler = Odemeler.Split("/").ToList();
+            List<string> result = new List<string>();
+
+            foreach (var Odeme in ListedOdemeler)
+            {
+                if (!string.IsNullOrEmpty(Odeme))
+                    result.Add(Odeme);
+            }
+
+            return result;
+        }
+
         private void ParseTaksitler(List<List<string>> TumTaksitler)
         {
             List<List<string>> Taksitler = new List<List<string>>();
@@ -64,16 +78,19 @@ namespace Muhasebe_Programı
                 foreach (var Taksit in TumTaksitler)
                 {
                     List<string> Tarihler = Taksit[4].Split(",").ToList();
+                    int OdenenTaksitSayisi = ParseOdemeler(Taksit[5]).Count;
 
                     AktifTaksitler_len = AktifTaksitler.Count;
 
-                    foreach (var Tarih in Tarihler)
+                    while (OdenenTaksitSayisi < Tarihler.Count)
                     {
-                        if (Tarih == todayDate.ToString().Split()[0])
+                        if (Tarihler[OdenenTaksitSayisi] == todayDate.ToString().Split()[0])
                         {
                             AktifTaksitler.Add(Taksit);
                             break;
                         }
+
+                        OdenenTaksitSayisi++;
                     }
 
                     if (AktifTaksitler_len == AktifTaksitler.Count)
