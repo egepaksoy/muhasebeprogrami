@@ -216,7 +216,7 @@ namespace Muhasebe_Programı
 
             if (result == DialogResult.Yes)
             {
-                bool basarili = sqlController.DeleteKasa(cariId);
+                bool basarili = sqlController.DeleteCari(cariId);
 
                 if (basarili)
                     CloseScreen();
