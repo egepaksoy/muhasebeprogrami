@@ -13,7 +13,7 @@ namespace Muhasebe_Programı
 {
     public partial class CarilerUC : UserControl
     {
-        SQLController sqlController = new SQLController("D:\\PROJELER\\Muhasebe Programı\\muhasebe.db");
+        SQLController sqlController = new SQLController();
         List<string> Cariler = new List<string>();
         List<Button> cariButonlar = new List<Button>();
         DesignEditor designEditor = new DesignEditor();

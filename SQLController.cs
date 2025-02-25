@@ -11,14 +11,10 @@ namespace ProgramLibrary
     {
         private readonly string connectionString;
 
-        public SQLController(string dbPath)
-        {
-            connectionString = $"Data Source={dbPath};Version=3;";
-        }
-
         public SQLController()
         {
-            connectionString = $"Data Source=D:\\PROJELER\\Muhasebe Programı\\muhasebe.db; Version=3;";
+            string dbPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "muhasebe.db");
+            connectionString = $"Data Source={dbPath}; Version=3;";
         }
 
         public string NewCari(string cariAdi, string cariTelefonu, string cariAdresi)

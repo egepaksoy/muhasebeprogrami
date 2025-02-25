@@ -14,7 +14,7 @@ namespace Muhasebe_Programı
 {
     public partial class KasaEkleUC : UserControl
     {
-        SQLController sqlController = new SQLController("D:\\PROJELER\\Muhasebe Programı\\muhasebe.db");
+        SQLController sqlController = new SQLController();
         bool duzenlemeModu = false;
 
         string kasa_adi;

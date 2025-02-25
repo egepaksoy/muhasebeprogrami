@@ -15,7 +15,7 @@ namespace Muhasebe_Programı
 {
     public partial class StokUC : UserControl
     {
-        SQLController sqlController = new SQLController("D:\\PROJELER\\Muhasebe Programı\\muhasebe.db");
+        SQLController sqlController = new SQLController();
         DesignEditor designEditor;
 
         List<Button> StokButtons = new List<Button>();

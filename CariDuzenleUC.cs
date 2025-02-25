@@ -13,7 +13,7 @@ namespace Muhasebe_Programı
 {
     public partial class CariDuzenleUC : UserControl
     {
-        SQLController sqlController = new SQLController("D:\\PROJELER\\Muhasebe Programı\\muhasebe.db");
+        SQLController sqlController = new SQLController();
         DesignEditor designEditor = new DesignEditor();
 
         string cari_adi = null;

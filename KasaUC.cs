@@ -13,7 +13,7 @@ namespace Muhasebe_Programı
 {
     public partial class KasaUC : UserControl
     {
-        SQLController sqlController = new SQLController("D:\\PROJELER\\Muhasebe Programı\\muhasebe.db");
+        SQLController sqlController = new SQLController();
         DesignEditor designEditor;
 
         List<Button> KasaButtons = new List<Button>();

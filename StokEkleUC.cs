@@ -13,7 +13,7 @@ namespace Muhasebe_Programı
 {
     public partial class StokEkleUC : UserControl
     {
-        SQLController sqlController = new SQLController("D:\\PROJELER\\Muhasebe Programı\\muhasebe.db");
+        SQLController sqlController = new SQLController();
 
         long urunId;
 
