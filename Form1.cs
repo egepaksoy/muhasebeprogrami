@@ -5,7 +5,6 @@ namespace Muhasebe_Programı
     public partial class MainScreen : Form
     {
         List<Button> SideBarButtons = new List<Button>();
-        List<UserControl> UserControls = new List<UserControl>();
         DesignEditor designEditor;
 
         public MainScreen()
@@ -13,12 +12,22 @@ namespace Muhasebe_Programı
             InitializeComponent();
         }
 
+        private Dictionary<string, Func<UserControl>> UserControlCreators = new Dictionary<string, Func<UserControl>>()
+        {
+            { "kasa", () => new KasaUC() },
+            { "cariler", () => new CarilerUC() },
+            { "stok", () => new StokUC() },
+            { "satis", () => new SatisUC() },
+            { "taksitler", () => new TaksitlerUC() },
+            { "eskitaksitler", () => new EskiTaksitlerUC() },
+            { "eskisatislar", () => new EskiSatislarUC() }
+        };
+
         private void MainScreen_Load(object sender, EventArgs e)
         {
             SideBarButtons = [btnCariler, btnKasa, btnSatis, btnStok, btnTaksitler, btnEskiTaksitler, btnEskiSatislar];
-            UserControls = [new KasaUC(), new CarilerUC(), new StokUC(), new SatisUC(), new TaksitlerUC(), new EskiTaksitlerUC(), new EskiSatislarUC()];
 
-            designEditor = new DesignEditor(mainPanel, SideBarButtons, UserControls);
+            designEditor = new DesignEditor(mainPanel, SideBarButtons, UserControlCreators);
 
             designEditor.BtnEditor();
 

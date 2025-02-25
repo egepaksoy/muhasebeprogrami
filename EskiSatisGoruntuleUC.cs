@@ -14,8 +14,12 @@ namespace Muhasebe_Programı
     public partial class EskiSatisGoruntuleUC : UserControl
     {
         long SatisId;
+        long TaksitId = -1;
+
         List<string> Satis;
         SQLController sqlController = new SQLController();
+
+        EkScreen formTaksitGoruntuleme = new EkScreen(new TaksitGoruntuleUC());
 
         public EskiSatisGoruntuleUC(long satisId)
         {
@@ -86,6 +90,9 @@ namespace Muhasebe_Programı
             labelOdemeTipi.Text = odemeTuru;
             labelAdet.Text = satisAdedi;
 
+            if (taksitli)
+                TaksitId = Convert.ToInt64(sqlController.GetSatisTaksit(SatisId)[0]);
+
             TaksitButonuKontrolu(taksitli);
         }
 
@@ -102,7 +109,16 @@ namespace Muhasebe_Programı
 
         private void button1_Click(object sender, EventArgs e)
         {
+            if (TaksitId == -1)
+                return;
 
+            if (!formTaksitGoruntuleme.Created)
+            {
+                formTaksitGoruntuleme = new EkScreen(new TaksitGoruntuleUC(TaksitId));
+                formTaksitGoruntuleme.ShowDialog();
+            }
+
+            RenderSatis();
         }
     }
 }

@@ -35,7 +35,7 @@ namespace Muhasebe_Programı
         int baslangicY = 20;
         int satirlarArasiBosluk = 10;
 
-        EkScreen formTaksitGoruntuleme = new EkScreen(new EskiSatisGoruntuleUC());
+        EkScreen formTaksitGoruntuleme = new EkScreen(new TaksitGoruntuleUC());
 
         Point labelAktifTaksitler_Konum = new Point(72, 35);
         Point panelAktifTaksitler_Konum = new Point(72, 80);

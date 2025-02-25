@@ -887,6 +887,44 @@ namespace ProgramLibrary
             return null;
         }
 
+        public List<string> GetSatisTaksit(long satisId)
+        {
+            List<string> TaksitlerBilgileri = new List<string>();
+            using (SQLiteConnection conn = new SQLiteConnection(connectionString))
+            {
+                conn.Open();
+                string sql = "SELECT * FROM Taksitler WHERE satis_id = @satis_id";
+                using (SQLiteCommand cmd = new SQLiteCommand(sql, conn))
+                {
+                    cmd.Parameters.AddWithValue("@satis_id", satisId);
+
+                    using (SQLiteDataReader reader = cmd.ExecuteReader())
+                    {
+                        if (reader.Read())
+                        {
+                            TaksitlerBilgileri = new List<string>
+                            {
+                                reader["id"].ToString(),
+                                reader["satis_id"].ToString(),
+                                reader["cari_id"].ToString(),
+                                reader["toplam_tutar"].ToString(),
+                                reader["odeme_tarihleri"].ToString(),
+                                reader["odenen_tutarlar"].ToString(),
+                                reader["kalan_tutar"].ToString(),
+                                reader["taksit_sayisi"].ToString(),
+                                reader["aylik_odeme_miktari"].ToString(),
+                                reader["vade_tipi"].ToString(),
+                                reader["aktif"].ToString()
+                            };
+                        }
+                    }
+                }
+            }
+            if (TaksitlerBilgileri.Count > 0)
+                return TaksitlerBilgileri;
+            return null;
+        }
+
         public List<List<string>> LoadTaksitler(bool aktif)
         {
             List<List<string>> TaksitBilgileri = new List<List<string>>();

@@ -1,9 +1,11 @@
-﻿using System;
+﻿using Muhasebe_Programı;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml.Linq;
 
 namespace ProgramLibrary
 {
@@ -11,13 +13,13 @@ namespace ProgramLibrary
     {
         public Panel mainPanel = null;
         public List<Button> sideBarButtons = null;
-        public List<UserControl> UCs = null;
+        public Dictionary<string, Func<UserControl>> UserControlCreators;
 
-        public DesignEditor(Panel mainPanel, List<Button> sideBarButtons, List<UserControl> UCs)
+        public DesignEditor(Panel mainPanel, List<Button> sideBarButtons, Dictionary<string, Func<UserControl>> UserControlCreators)
         {
             this.mainPanel = mainPanel;
             this.sideBarButtons = sideBarButtons;
-            this.UCs = UCs;
+            this.UserControlCreators = UserControlCreators;
         }
 
         public DesignEditor()
@@ -67,13 +69,12 @@ namespace ProgramLibrary
 
         public void SwitchSide(Button btn)
         {
-            for (int i = 0;i < this.UCs.Count;i++)
+            string ucName = btn.Name.Split("btn")[1].ToLower();
+
+            if (UserControlCreators.ContainsKey(ucName))
             {
-                if (this.UCs[i].Name.ToLower().Contains(btn.Name.Split("btn")[1].ToLower()))
-                {
-                    LoadUserControl(this.UCs[i], this.mainPanel);
-                    break;
-                }
+                UserControl uc = UserControlCreators[ucName](); // Yeni nesne oluştur
+                LoadUserControl(uc, this.mainPanel);
             }
         }
 

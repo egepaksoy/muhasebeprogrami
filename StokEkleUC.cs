@@ -121,7 +121,7 @@ namespace Muhasebe_Programı
                         stokTuru = "alim";
 
                     string err = sqlController.NewStok(textBoxUrunAdi.Text.ToLower(), Convert.ToInt32(textBoxAdet.Text), Convert.ToDouble(textBoxBirimFiyat.Text), textBoxFaturaNo.Text, stokTuru);
-                    if (!string.IsNullOrEmpty(err))
+                    if (!long.TryParse(err, out long res))
                         MessageBox.Show(err);
                     else
                         ReturnOrigin();
@@ -136,7 +136,7 @@ namespace Muhasebe_Programı
                         stokTuru = "alim";
 
                     string err = sqlController.UpdateStok(urunId, textBoxUrunAdi.Text.ToLower(), Convert.ToInt32(textBoxAdet.Text), Convert.ToDouble(textBoxBirimFiyat.Text), textBoxFaturaNo.Text, stokTuru);
-                    if (!string.IsNullOrEmpty(err))
+                    if (!long.TryParse(err, out long res))
                         MessageBox.Show(err);
                 }
             }

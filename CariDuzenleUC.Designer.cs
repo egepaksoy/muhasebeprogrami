@@ -40,6 +40,7 @@
             panelTaksitler = new Panel();
             label6 = new Label();
             panelSatislar = new Panel();
+            btnSil = new Button();
             SuspendLayout();
             // 
             // label5
@@ -165,11 +166,22 @@
             panelSatislar.Size = new Size(360, 228);
             panelSatislar.TabIndex = 24;
             // 
+            // btnSil
+            // 
+            btnSil.Location = new Point(61, 496);
+            btnSil.Name = "btnSil";
+            btnSil.Size = new Size(84, 33);
+            btnSil.TabIndex = 25;
+            btnSil.Text = "Cariyi Sil";
+            btnSil.UseVisualStyleBackColor = true;
+            btnSil.Click += btnSil_Click;
+            // 
             // CariDuzenleUC
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.FromArgb(224, 231, 239);
+            Controls.Add(btnSil);
             Controls.Add(panelSatislar);
             Controls.Add(label6);
             Controls.Add(panelTaksitler);
@@ -203,5 +215,6 @@
         private Panel panelTaksitler;
         private Label label6;
         private Panel panelSatislar;
+        private Button btnSil;
     }
 }

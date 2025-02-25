@@ -17,6 +17,8 @@ namespace Muhasebe_Programı
         DesignEditor designEditor = new DesignEditor();
 
         string cari_adi = null;
+        long cariId;
+
         List<string> cari;
         List<List<string>> Satislar;
         List<List<string>> Taksitler;
@@ -46,6 +48,7 @@ namespace Muhasebe_Programı
 
             this.cari_adi = cari_adi;
             cari = sqlController.GetCari(cari_adi);
+            cariId = Convert.ToInt64(cari[0]);
         }
 
         private void RemoveButtons()
@@ -193,6 +196,33 @@ namespace Muhasebe_Programı
                 sqlController.UpdateCari(Convert.ToInt64(cari[0]), cariAdi, telefon, adres);
             else
                 ReturnOrigin();
+        }
+
+        private void CloseScreen()
+        {
+            foreach (Form form in Application.OpenForms)
+            {
+                if (form.Name == "EkScreen")
+                {
+                    form.Close();
+                    break;
+                }
+            }
+        }
+
+        private void btnSil_Click(object sender, EventArgs e)
+        {
+            DialogResult result = MessageBox.Show("Cariyi silmek istiyor musunuz?", "Onay", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+
+            if (result == DialogResult.Yes)
+            {
+                bool basarili = sqlController.DeleteKasa(cariId);
+
+                if (basarili)
+                    CloseScreen();
+                else
+                    MessageBox.Show("Cari Bulunamadı!");
+            }
         }
     }
 }
