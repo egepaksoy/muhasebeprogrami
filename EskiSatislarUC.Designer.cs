@@ -61,8 +61,6 @@
             Name = "EskiSatislarUC";
             Size = new Size(995, 681);
             Load += EskiSatislarUC_Load;
-            Enter += EskiSatislarUC_Load;
-            Leave += EskiSatislarUC_Load;
             ResumeLayout(false);
             PerformLayout();
         }

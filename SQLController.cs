@@ -13,7 +13,8 @@ namespace ProgramLibrary
 
         public SQLController()
         {
-            string dbPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "muhasebe.db");
+            //string dbPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "muhasebe.db");
+            string dbPath = "D:\\PROJELER\\Muhasebe Programı\\muhasebe.db";
             connectionString = $"Data Source={dbPath}; Version=3;";
         }
 

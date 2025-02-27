@@ -126,7 +126,6 @@ namespace Muhasebe_Programı
 
         private void EskiSatislarUC_Load(object sender, EventArgs e)
         {
-            RemovePanels();
             RenderSatislar();
         }
     }
